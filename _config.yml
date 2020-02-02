@@ -1,8 +1,8 @@
 # Site
 title:              Anurag Shenoy Blog
-bio:                'Jekyll version of the Massively theme by HTML5UP'
-description:        "Jekyll version of the Massively theme by HTML5UP"
-locale:             en_US
+bio:                'Software Dev, Bookworm and often lost in thought'
+description:        "A place where I share my thoughts, knowledge and experiences"
+locale:             en_GB
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://shenoy-anurag.github.io/" # the base hostname & protocol for your site
 
@@ -14,11 +14,12 @@ analytics-id:       "default"
 twitter:            default
 facebook:           default
 instagram:          default
-github:             default
+linkedin:           "in/anurag-shenoy/"
+github:             "shenoy-anurag"
 
 # personal
-location:           Navi Mumbai, Maharashtra
-phone:              +91 ----- -----
+location:
+phone:              +- ----- -----
 email:              anuragshenoy@outlook.com # change this to your email to receive free emails for your contact submissions via Slapform.com
 
 # Other
