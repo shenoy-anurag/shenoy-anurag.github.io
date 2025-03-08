@@ -54,7 +54,7 @@ export default {
       para:
         "An LLM app which helps you to find definitions of Hindi words and their English counterparts.", 
       imageSrc: hinDictGIF,
-      url: "blog/hindict",
+      url: "https://hindict.anuragshenoy.in/",
     },
     {
       title: "Virtual Theremin",
@@ -172,6 +172,11 @@ export default {
       level: INTERMEDIATE,
     },
     {
+      img: ollamaIcon,
+      para: "Deployed Local Large Language models such as llama 3.2 7B",
+      level: INTERMEDIATE,
+    },
+    {
       img: reactIcon,
       para: "6 months of experience working on personal and class projects.",
       level: INTERMEDIATE,
@@ -179,11 +184,6 @@ export default {
     {
       img: golangIcon,
       para: "4 months of experience working on a class project.",
-      level: INTERMEDIATE,
-    },
-    {
-      img: ollamaIcon,
-      para: "Deployed Local Large Language models such as llama 3.2 7B",
       level: INTERMEDIATE,
     },
     // {

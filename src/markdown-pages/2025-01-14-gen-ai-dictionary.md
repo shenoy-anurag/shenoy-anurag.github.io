@@ -14,6 +14,7 @@ keywords:
     - docker
     - llama
     - llama3.2:3B
+    - openai
     - react.js
     - next.js
     - streaming
@@ -23,8 +24,12 @@ tags:
     - python
     - computer science
     - demo
+    - generative ai
     - project
 ---
+
+## Try it out!
+https://hindict.anuragshenoy.in/
 
 ## Demo
 ![definition of the hindi word aadhyatmik](../images/hindict/hindict-demo-aadhyatmik-lg.gif)
@@ -51,9 +56,30 @@ I then use an API to fetch the definition of the top English word which is synon
 
 ## Future plans
 
-The plan is to extend this to have a full Hindi dictionary entry of the word searched, and have the English word follow after.
+The plan is to extend this to have a full Hindi dictionary entry of the word searched in addition to the English definition of the closest equivalent.
 
-Right now, I couldn't find a hindi dictionary with a permissive license.
+Right now, I couldn't find a Hindi dictionary with a permissive license.
+
+I'm considering parsing Wiktionary's data dump to generate my own Hindi dictionary.
+
+## Prompt Engineering
+> Respond in one concise sentence without disclaimers or examples. Format: User word title-case, (user word in Hindi), refers to … (provide a definition in 5-15 words). Always conclude with this exact phrase: \'Closest English equivalent: (closest english equivalent single word)\'. Do not omit this phrase under any circumstances.
+
+Had to add the "Do not omit this phrase under any circumstances" because the model was hallucinating.
+
+This allows me parse the closest English equivalent word and retrieve it's definition.
+
+## More demo images
+#### Bhumi
+![Demo Screenshot: Bhumi](../images/hindict/hindict-bhumi-light.png)
+#### Bhumi (dark mode)
+![Demo Screenshot: Bhumi (dark mode)](../images/hindict/hindict-bhumi-dark.png)
+#### Gyan
+![Demo Screenshot: Gyan](../images/hindict/hindict-gyan.png)
+#### Manushya
+![Demo Screenshot: Manushya](../images/hindict/hindict-manushya.png)
+#### Janma (dark mode)
+![Demo Screenshot: Janma](../images/hindict/hindict-janma.png)
 
 ## Tools used
 ### Ollama
@@ -69,6 +95,9 @@ https://ollama.com/library/llama3.2:3b
 https://www.llama.com/llama-downloads/
 
 You'll need permission to use the models.
+
+### Open AI 4o-mini
+Using OpenAI's GPT 4o-mini in the production version of the app.
 
 ### ReactJS + NextJS
 https://nextjs.org/
