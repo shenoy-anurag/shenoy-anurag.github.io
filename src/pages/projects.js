@@ -3,14 +3,14 @@ import React from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 // Components
-import Work from "../components/Work"
+import Projects from "../components/Projects"
 import Footer from "../components/Footer"
 
-const WorkPage = () => (
+const ProjectsPage = () => (
   <Layout>
     <SEO title="Anurag Shenoy" />
     {/* <Header></Header> */}
-    <Work></Work>
+    <Projects></Projects>
     {/* <About></About> */}
     {/* <Skills></Skills> */}
     {/* <Promotion></Promotion> */}
@@ -18,4 +18,4 @@ const WorkPage = () => (
   </Layout>
 )
 
-export default WorkPage
+export default ProjectsPage

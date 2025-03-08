@@ -4,11 +4,11 @@ import Fade from "react-reveal/Fade"
 
 import data from "../yourdata"
 
-const Work = () => {
+const Projects = () => {
   return (
-    <div className="section" id="work">
+    <div className="section" id="projects">
       <div className="container">
-        <div className="work-wrapper">
+        <div className="projects-wrapper">
           <Fade bottom>
             <h1>Projects</h1>
           </Fade>
@@ -32,4 +32,4 @@ const Work = () => {
   )
 }
 
-export default Work
+export default Projects

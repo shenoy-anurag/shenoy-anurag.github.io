@@ -1,4 +1,4 @@
-.work-wrapper {
+.projects-wrapper {
   width: 80vw;
   margin-top: 10vh;
   display: flex;
@@ -12,7 +12,7 @@
     display: grid;
     margin-top: 20px;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
+    grid-gap: 15px;
     @include media(">=phone", "<lgphone") {
       grid-template-columns: 1fr;
     }

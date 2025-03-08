@@ -47,7 +47,7 @@ export default {
 
   // End Header Details -----------------------
 
-  // Work Section ------------------------
+  // Projects Section ------------------------
   projects: [
     {
       title: "HinDict",
@@ -112,7 +112,7 @@ export default {
     */
   ],
 
-  // End Work Section -----------------------
+  // End Projects Section -----------------------
 
   // About Section --------------
   aboutParaOne:
