@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkanurag_shenoy_website=self.webpackChunkanurag_shenoy_website||[]).push([[125],{3331:function(e,t,n){n.r(t);var a=n(6540),u=n(4446),s=n(2269);t.default=()=>a.createElement(u.A,null,a.createElement(s.A,{title:"404: Not found — Anurag Shenoy"}),a.createElement("div",{className:"not-found"},a.createElement("h1",null,"404: Not Found"),a.createElement("p",null,"You just hit a route that doesn't exist... the sadness.")))}}]);
+//# sourceMappingURL=component---src-pages-404-js-4f8637e94b7cc70b6109.js.map

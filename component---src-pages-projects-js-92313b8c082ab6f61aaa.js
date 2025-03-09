@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkanurag_shenoy_website=self.webpackChunkanurag_shenoy_website||[]).push([[429],{3049:function(e,n,t){t.r(n);var l=t(6540),a=t(4446),u=t(2269),r=t(5065),s=t(2794);n.default=()=>l.createElement(a.A,null,l.createElement(u.A,{title:"Anurag Shenoy — Projects"}),l.createElement(r.A,null),l.createElement(s.A,null))}}]);
+//# sourceMappingURL=component---src-pages-projects-js-92313b8c082ab6f61aaa.js.map
