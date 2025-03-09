@@ -14,6 +14,9 @@ const Contact = () => {
           <a className="email-link" href={`mailto:${data.contactEmail}`}>
             {data.contactEmail}
           </a>
+          <button className="primary-btn mt-resume">
+            <a href={data.resume.urlPdf}>Resume</a>
+          </button>
         </div>
       </div>
     </div>

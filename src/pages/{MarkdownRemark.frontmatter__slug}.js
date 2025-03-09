@@ -3,6 +3,7 @@ import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import Footer from "../components/Footer"
 
 export default function Template({
   data, // this prop will be injected by the GraphQL query below.
@@ -11,7 +12,7 @@ export default function Template({
   const { frontmatter, html } = markdownRemark
   return (
     <Layout>
-      <SEO title={ frontmatter.title + " | Anurag Shenoy's Blog"} />
+      <SEO title={ frontmatter.title + " — Anurag Shenoy's Blog"} />
       <div className="blog-post-container">
         {/* <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script> */}
         {/* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous"></link> */}
@@ -24,6 +25,7 @@ export default function Template({
           />
         </div>
       </div>
+      <Footer />
     </Layout>
   )
 }

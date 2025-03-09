@@ -8,7 +8,7 @@ import Footer from "../components/Footer"
 
 const AboutPage = () => (
   <Layout>
-    <SEO title="Anurag Shenoy | About" />
+    <SEO title="Anurag Shenoy — About" />
     <About></About>
     <Footer></Footer>
   </Layout>

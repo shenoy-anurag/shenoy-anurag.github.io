@@ -40,7 +40,7 @@ export default {
   ],
   //   Header Paragraph
   headerParagraph:
-    "Professional with over 5 years of experience in Industry and Academia, building ML / AI models and web applications.",
+    "Professional with over 5 years of experience in building ML / AI models and web applications.",
 
   //Contact Email
   contactEmail: "anuragshenoy21@gmail.com",
@@ -216,6 +216,10 @@ export default {
 
   contactSubHeading: "Let's build something great together",
   contactPhoneNumber: "+1 (352)-888-9648",
+  resume: {
+    urlPdf: "https://drive.google.com/file/d/1VlPHVgvttEx-UtJzm7N_Lzt5GHOepcUZ/view?usp=sharing",
+    urlDoc: "https://docs.google.com/document/d/1jY9xVGwHeCfXm0dQ-lRzO9Y888IM-mRU/edit?usp=sharing&ouid=107150247661293569256&rtpof=true&sd=true",
+  },
 
   // -------------- End Contact Section ---------------
 
