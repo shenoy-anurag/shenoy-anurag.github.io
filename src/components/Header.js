@@ -11,10 +11,10 @@ const Header = () => {
         <div className="header-wrapper">
           <Fade bottom>
             <h1>
-              Hi, I'm {data.name}{" "}
-              <span role="img" aria-label="Emoji">
+              Hi, I'm {data.firstName}{" "}
+              {/* <span role="img" aria-label="Emoji">
                 👋
-              </span>
+              </span> */}
             </h1>
           </Fade>
           <Fade bottom cascade>

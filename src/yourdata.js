@@ -32,15 +32,17 @@ const EXPERT = "expert"
 
 export default {
   //   Header Details ---------------------
-  name: "Anurag",
+  name: "Anurag Shenoy",
+  firstName: "Anurag",
+  lastName: "Shenoy",
   headerTagline: "Building digital products, and obtaining insights from data using deep learning",
   headerTaglines: [
-    "I'm a Machine Learning Engineer",
-    "and I try my best to create things with ❤️"
+    "I’m a Software Engineer based in the US,",
+    "passionate about AI-driven solutions."
   ],
   //   Header Paragraph
   headerParagraph:
-    "Professional with over 5 years of experience in building ML / AI models and web applications.",
+    "Software Engineer specialized in ML with over 5 years of experience in building ML / AI models and web applications.",
 
   //Contact Email
   contactEmail: "anuragshenoy21@gmail.com",
