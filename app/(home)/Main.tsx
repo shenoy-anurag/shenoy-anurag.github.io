@@ -3,15 +3,16 @@ import { useState } from 'react'
 import siteMetadata from '@/data/siteMetadata'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 import GradientAnimation from '@/components/GradientAnimation'
-import Header from '@/components/Header'
-import Posts from './Posts'
+import MainHeader from '@/components/MainHeader'
 import MainSectionContainer from '@/components/MainSectionContainer'
 import SectionContainer from '@/components/SectionContainer'
+import Posts from './Posts'
+import Heading from './Heading'
 
-export default function Home({ posts }: Props) {
+export default function Home({ posts }) {
   const [animationProps, setAnimationProps] = useState({
     colorA: [0.1, 0.8, 0.3], // Dark green
-    colorB: [0.2, 0.5, 0.5], // Light green
+    colorB: [0.2, 0.49, 0.5], // Light green
     chaosLevel: 1.5,
     scale: 1.0,
   })
@@ -26,17 +27,21 @@ export default function Home({ posts }: Props) {
           scale={animationProps.scale}
         />
         <SectionContainer>
-          <Header />
+          <MainHeader />
+          <Heading />
         </SectionContainer>
       </MainSectionContainer>
-      <SectionContainer>
-        <Posts posts={posts} />
-        {siteMetadata.newsletter?.provider && (
-          <div className="flex items-center justify-center pt-4">
-            <NewsletterForm />
-          </div>
-        )}
-      </SectionContainer>
+      <div className="pr-[calc(100vw-100%)] pl-[calc(100vw-100%)]">
+        <SectionContainer>
+          <Posts posts={posts} />
+          {siteMetadata.newsletter?.provider && (
+            <div className="flex items-center justify-center pt-4">
+              <NewsletterForm />
+            </div>
+          )}
+          <p>Lorem Ispum</p>
+        </SectionContainer>
+      </div>
     </>
   )
 }

@@ -8,7 +8,7 @@ const portfolioData = {
   ],
   headerSubtitle: 'Currently open to work, I’m looking for opportunities to make an impact.',
   //   Header Paragraph
-  headline: 'I&quot;m a Software Engineer based in the US, passionate about AI-driven solutions.',
+  headline: 'I’m a Software Engineer based in the US, passionate about AI-driven solutions.',
   // headerParagraph:
   //   'Software Engineer specialized in ML with over 5 years of experience in building ML / AI models and web applications.',
   lookBelow: 'Scroll down to see how I bring ideas to life',

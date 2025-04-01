@@ -18,8 +18,8 @@ const space_grotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
 })
 
-const poppins_regular = Poppins({
-  weight: '400',
+const poppins = Poppins({
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-poppins',
@@ -72,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang={siteMetadata.language}
       // className={`${space_grotesk.variable} scroll-smooth`}
-      className={`${poppins_regular.variable} scroll-smooth`}
+      className={`${poppins.variable} scroll-smooth`}
       suppressHydrationWarning
     >
       <link

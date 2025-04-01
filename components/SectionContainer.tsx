@@ -19,6 +19,6 @@ export default function SectionContainer({ children }: Props) {
     //     {children}
     //   </section>
     // <section className="mx-auto">{children}</section>
-    <section className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">{children}</section>
+    <section className="mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">{children}</section>
   )
 }

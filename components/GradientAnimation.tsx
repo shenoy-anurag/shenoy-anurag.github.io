@@ -230,24 +230,12 @@ const GradientAnimation: FC<GradientAnimationProps> = ({
   }, [colorA, colorB, chaosLevel, scale]) // Re-run effect if these props change
 
   return (
-    // <canvas
-    //   ref={canvasRef}
-    //   className={className}
-    //   style={{
-    //     width: '100%',
-    //     height: '100%',
-    //     position: 'absolute',
-    //     top: 0,
-    //     left: 0,
-    //     zIndex: -1,
-    //   }}
-    // />
     <canvas
       ref={canvasRef}
       className={className}
       style={{
         width: '100%',
-        height: 'inherit',
+        height: '100%',
         position: 'absolute',
         top: 0,
         left: 0,
