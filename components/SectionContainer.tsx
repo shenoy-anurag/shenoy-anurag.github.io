@@ -4,8 +4,21 @@ interface Props {
   children: ReactNode
 }
 
+// export default function SectionContainer({ children }: Props) {
+//   return (
+//     <section className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">{children}</section>
+//   )
+// }
+
 export default function SectionContainer({ children }: Props) {
   return (
-    <section className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">{children}</section>
+    // <section className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">{children}</section>
+    // <section className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-7xl xl:px-0">{children}</section>
+    // <section>{children}</section>
+    //   <section className="mx-auto max-w-[80vh] px-4 sm:px-6 xl:max-w-[150vh] xl:px-0">
+    //     {children}
+    //   </section>
+    // <section className="mx-auto">{children}</section>
+    <section className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">{children}</section>
   )
 }

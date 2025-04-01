@@ -40,6 +40,15 @@ export function Mail(svgProps: SVGProps<SVGSVGElement>) {
   )
 }
 
+export function Kaggle(svgProps: SVGProps<SVGSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" {...svgProps}>
+      <title>Kaggle</title>
+      <path d="M 385.708,476.478 254.742,313.713 380.32,192.179 c 2.334,-2.426 1.526,-9.433 -4.761,-9.433 h -62.16 c -3.145,0 -6.288,1.618 -9.433,4.761 L 185.128,307.604 V 32.738 c 0,-4.491 -2.247,-6.737 -6.738,-6.737 h -46.618 c -4.492,0 -6.737,2.246 -6.737,6.737 v 446.433 c 0,4.491 2.246,6.738 6.737,6.738 h 46.618 c 4.491,0 6.738,-2.247 6.738,-6.738 v -97.91 l 27.666,-26.317 99.257,126.294 c 2.695,3.145 5.839,4.762 9.432,4.762 h 60.095 c 3.143,0 4.939,-0.899 5.389,-2.696 z"></path>
+    </svg>
+  )
+}
+
 export function Twitter(svgProps: SVGProps<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...svgProps}>

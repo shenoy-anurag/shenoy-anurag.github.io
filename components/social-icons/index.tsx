@@ -4,7 +4,7 @@ import {
   Facebook,
   Youtube,
   Linkedin,
-  Twitter,
+  Kaggle,
   X,
   Mastodon,
   Threads,
@@ -16,16 +16,16 @@ import {
 const components = {
   mail: Mail,
   github: Github,
-  facebook: Facebook,
   youtube: Youtube,
   linkedin: Linkedin,
-  twitter: Twitter,
+  kaggle: Kaggle,
+  medium: Medium,
   x: X,
+  bluesky: Bluesky,
   mastodon: Mastodon,
+  facebook: Facebook,
   threads: Threads,
   instagram: Instagram,
-  medium: Medium,
-  bluesky: Bluesky,
 }
 
 type SocialIconProps = {
@@ -52,7 +52,7 @@ const SocialIcon = ({ kind, href, size = 8 }: SocialIconProps) => {
     >
       <span className="sr-only">{kind}</span>
       <SocialSvg
-        className={`hover:text-primary-500 dark:hover:text-primary-400 fill-current text-gray-700 dark:text-gray-200 h-${size} w-${size}`}
+        className={`hover:text-primary-400 dark:hover:text-primary-500 fill-current text-gray-700 dark:text-gray-200 h-${size} w-${size}`}
       />
     </a>
   )
