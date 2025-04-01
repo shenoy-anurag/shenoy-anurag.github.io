@@ -6,8 +6,8 @@ import GradientAnimation from '@/components/GradientAnimation'
 import MainHeader from '@/components/MainHeader'
 import MainSectionContainer from '@/components/MainSectionContainer'
 import SectionContainer from '@/components/SectionContainer'
-import Posts from './Posts'
-import Heading from './Heading'
+import Heading from '@/components/Heading'
+import Showcase from '@/components/Showcase'
 
 export default function Home({ posts }) {
   const [animationProps, setAnimationProps] = useState({
@@ -33,13 +33,12 @@ export default function Home({ posts }) {
       </MainSectionContainer>
       <div className="pr-[calc(100vw-100%)] pl-[calc(100vw-100%)]">
         <SectionContainer>
-          <Posts posts={posts} />
+          <Showcase />
           {siteMetadata.newsletter?.provider && (
             <div className="flex items-center justify-center pt-4">
               <NewsletterForm />
             </div>
           )}
-          <p>Lorem Ispum</p>
         </SectionContainer>
       </div>
     </>
