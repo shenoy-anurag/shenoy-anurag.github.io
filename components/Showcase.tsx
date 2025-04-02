@@ -108,28 +108,29 @@ export default function Showcase() {
         {showcaseItems.map((d, index) => (
           <div
             key={index}
-            className="grid-flow-auto grid-row-2 grid items-center justify-center gap-12 py-8 lg:grid-flow-row lg:grid-cols-2 lg:py-24"
+            // className="grid-flow-auto grid-row-2 grid gap-12 py-8 lg:grid-flow-row lg:grid-cols-2 lg:py-24"
+            className="grid-flow-auto grid-row-2 grid gap-4 py-8 lg:grid-flow-row lg:grid-cols-2 lg:gap-0 lg:py-24"
           >
             <div className="order-2 flex flex-col gap-6 lg:order-1 lg:items-start lg:gap-8 lg:pr-28">
               <h4 className="text-primary-500 text-lg">Project {d.id}</h4>
               <h2 className="text-2xl font-bold md:text-2xl lg:text-3xl">{d.title}</h2>
-              <p className="text-lg">{d.description}</p>
-              <p className="text-lg">
-                <strong>Tech Stack:</strong>
+              <p className="text-lg/8">{d.description}</p>
+              <p className="text-lg/8">
+                <span className="font-bold">Tech Stack:</span>
                 <span> </span>
                 <span className="italic">{d.techStack}</span>
               </p>
               {d.deployment && (
                 <p className="text-lg">
-                  <strong>Deployment:</strong>
+                  <span className="font-bold">Deployment:</span>
                   <span> </span>
                   <span className="italic">{d.deployment}</span>
                 </p>
               )}
               {d.keyFeatures && (
-                <div className="flex flex-col gap-2 text-lg text-black lg:gap-4 dark:text-white">
-                  <strong>Key Features:</strong>
-                  <ul className="list-outside list-disc pl-10">
+                <div className="flex flex-col gap-2 text-lg text-black lg:gap-4 lg:text-lg dark:text-white">
+                  <span className="font-bold">Key Features:</span>
+                  <ul className="list-outside list-disc pl-8 lg:pl-10">
                     {d.keyFeatures.map((feature, i) => (
                       <li key={i} className="my-3 pl-1">
                         {feature}
@@ -176,15 +177,17 @@ export default function Showcase() {
                 </div>
               )}
             </div>
-            <Image
-              src={d.imgSrc}
-              alt={d.imgAlt || `Project ${d.title} image`}
-              width={500}
-              height={300}
-              quality={100}
-              unoptimized={true}
-              className="order-1 w-[100dvw] lg:order-2"
-            />
+            <div className="order-1 place-content-center lg:order-2">
+              <Image
+                src={d.imgSrc}
+                alt={d.imgAlt || `Project ${d.title} image`}
+                width={500}
+                height={300}
+                quality={100}
+                unoptimized={true}
+                className="w-[100dvw]"
+              />
+            </div>
           </div>
         ))}
       </div>

@@ -6,11 +6,22 @@ import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
 
-const Header = () => {
+interface HeaderProps {
+  page?: string
+}
+
+const Header = ({ page }: HeaderProps) => {
   let headerClass =
-    'flex items-center w-full bg-none dark:bg-none justify-between py-8 sm:py-8 lg:py-16'
+    'flex items-center w-full bg-none dark:bg-none py-[6vw] md:py-[3vw] justify-between'
   if (siteMetadata.stickyNav) {
     headerClass += ' sticky top-0 z-50'
+  }
+  let headerNavLinksClass = ''
+  if (page && page === 'landing') {
+    headerNavLinksClass += ' text-gray-100 dark:text-gray-100'
+    headerClass += ' text-gray-100'
+  } else {
+    headerNavLinksClass += ' text-gray-900 dark:text-gray-100'
   }
 
   return (
@@ -18,23 +29,24 @@ const Header = () => {
       <Link href="/" aria-label={siteMetadata.headerTitle}>
         <div className="flex items-center justify-between">
           {typeof siteMetadata.headerTitle === 'string' ? (
-            <div className="hidden h-6 text-2xl font-semibold sm:block">
-              {siteMetadata.headerTitle}
-            </div>
+            <div className="h-6 text-2xl font-normal sm:block">{siteMetadata.headerTitle}</div>
           ) : (
             siteMetadata.headerTitle
           )}
         </div>
       </Link>
-      <div className="flex items-center space-x-4 leading-5 sm:-mr-6 sm:space-x-6">
-        <div className="no-scrollbar hidden max-w-40 items-center gap-x-4 overflow-x-auto sm:flex md:max-w-72 lg:max-w-96">
+      <div className="mt-2 flex items-center space-x-4 leading-5 sm:-mr-6 sm:space-x-6 md:mt-0">
+        <div className="no-scrollbar hidden max-w-40 items-center gap-x-6 overflow-x-auto sm:flex md:max-w-72 lg:max-w-96">
           {headerNavLinks
-            .filter((link) => link.href !== '/')
+            // .filter((link) => link.href !== '/')
             .map((link) => (
               <Link
                 key={link.title}
                 href={link.href}
-                className="hover:text-primary-500 dark:hover:text-primary-400 m-1 font-medium text-gray-900 dark:text-gray-100"
+                className={
+                  'hover:text-primary-500 dark:hover:text-primary-400 m-1 text-lg font-normal' +
+                  headerNavLinksClass
+                }
               >
                 {link.title}
               </Link>

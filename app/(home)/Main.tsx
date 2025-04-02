@@ -3,7 +3,7 @@ import { useState } from 'react'
 import siteMetadata from '@/data/siteMetadata'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 import GradientAnimation from '@/components/GradientAnimation'
-import MainHeader from '@/components/MainHeader'
+import Header from '@/components/Header'
 import MainSectionContainer from '@/components/MainSectionContainer'
 import SectionContainer from '@/components/SectionContainer'
 import Heading from '@/components/Heading'
@@ -26,19 +26,17 @@ export default function Home({ posts }) {
           chaosLevel={animationProps.chaosLevel}
           scale={animationProps.scale}
         />
-        <SectionContainer>
-          <MainHeader />
-          <Heading />
-        </SectionContainer>
+        <Header page="landing" />
+        <Heading />
       </MainSectionContainer>
-      <div className="pr-[calc(100vw-100%)] pl-[calc(100vw-100%)]">
+      <div>
         <SectionContainer>
           <Showcase />
-          {siteMetadata.newsletter?.provider && (
+          {/* {siteMetadata.newsletter?.provider && (
             <div className="flex items-center justify-center pt-4">
               <NewsletterForm />
             </div>
-          )}
+          )} */}
         </SectionContainer>
       </div>
     </>

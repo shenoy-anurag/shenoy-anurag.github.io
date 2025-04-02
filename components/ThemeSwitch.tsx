@@ -50,7 +50,7 @@ const ThemeSwitch = () => {
   return (
     <button
       aria-label="Toggle Dark Mode"
-      className="flex items-center justify-center"
+      className="hover:text-primary-500 dark:hover:text-primary-400 flex cursor-pointer items-center justify-center"
       onClick={() => setTheme(theme === 'dark' || resolvedTheme === 'dark' ? 'light' : 'dark')}
     >
       <svg
