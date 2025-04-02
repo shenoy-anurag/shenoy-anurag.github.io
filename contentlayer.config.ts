@@ -176,7 +176,7 @@ export default makeSource({
       rehypeKatex,
       rehypeKatexNoTranslate,
       [rehypeCitation, { path: path.join(root, 'data') }],
-      [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
+      [rehypePrismPlus, { defaultLanguage: 'py', ignoreMissing: true }],
       rehypePresetMinify,
     ],
   },

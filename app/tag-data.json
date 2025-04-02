@@ -11,7 +11,7 @@
   "project": 3,
   "elo": 1,
   "games": 1,
-  "package": 1,
+  "package": 2,
   "cicd": 1,
   "computer-science": 10,
   "demo": 1,
@@ -47,9 +47,6 @@
   "dynamic-programming": 2,
   "bugs": 1,
   "bioinformatics": 1,
-  "genome": 1,
-  "dna": 1,
-  "biopython": 1,
   "mutability": 1,
   "variables": 1,
   "data-types": 1
