@@ -1,0 +1,293 @@
+---
+draft: false
+type: Blog
+layout: PostSimple
+slug: "fast-api-deployment-using-aws-lambda"
+title: "FastAPI deployment using AWS Lambda"
+authors: ['default']
+date: "2025-03-27"
+lastmod: "2025-03-27"
+summary: "FastAPI deployment using AWS Lambda"
+# description: "A blog post on deploying FastAPI server on AWS Lambda using Docker containers."
+# keywords:
+#     - aws
+#     - deployment
+#     - cloud
+#     - devops
+#     - fastapi
+#     - web-development
+tags:
+    - deployment
+    - aws
+    - devops
+    - fastapi
+    - docker
+---
+
+# FastAPI deployment using AWS Lambda
+
+I recently wanted to deploy my personal project so that everyone could use it, and did some research on which cloud and what type of deployment I should use.
+
+I also wanted to save on costs of hosting my project, and AWS Lambda looked like the perfect intersection of learning new skills, cost, and meeting requirements.
+
+Having already built my app using Python and FastAPI, I needed to find out how to deploy my app on AWS Lambda.
+
+This blog documents my learnings, and frustrations, and how I overcame the issues and challenges I faced.
+
+# Steps
+
+1. Containerize your App using Docker.
+2. Build the docker image.
+3. Push the image to an AWS ECR repository.
+4. Create an AWS Lambda function, using the image repository as the source.
+5. Deploy the image to your Lambda function.
+6. Configure Lambda function and test.
+7. Configure API Gateway to access the Lambda function and provide an endpoint for you clients / users.
+
+# Architecture
+
+![Architecture: Deployment architecture, Users hit API Gateway, which interacts with our Lambda Function, and the Lambda function uses AWS ECR images, which are created and pushed from our PC.](/static/images/aws-lambda-fastapi/aws-lambda-architecture.png)
+
+Architecture: Deployment architecture, Users hit API Gateway, which interacts with our Lambda Function, and the Lambda function uses AWS ECR images, which are created and pushed from our PC.
+
+# Prerequisites
+
+- Your application
+- AWS CLI
+- ECR Repository in your AWS Account
+
+## Application
+
+I’m assuming your application is a FastAPI web server, and you have been using some sort of package manager like Poetry.
+
+Your next step is to Dockerize your app.
+
+My project structure looks like this:
+
+```plain
+ProjectName
+|— backend
+    |— app
+        |— a bunch of folders with code…
+        |— __init__.py
+        |— main.py
+    |— Dockerfile.aws.lambda
+|— docker-compose.yml
+```
+
+### Docker Compose File
+
+```yaml
+services:
+  my_image_name:
+      image: <aws_respository_name>/<tag>
+      container_name: my_container_name
+      build:      
+            context: 
+                ./backend      
+            dockerfile: 
+                ./Dockerfile.aws.lambda    
+        ports:
+            - 8000:8000
+        env_file:
+            - ./backend/.env
+        environment:
+            - DOMAIN=${DOMAIN}
+            - ENVIRONMENT=${ENVIRONMENT}
+            - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS}
+            - SECRET_KEY=${SECRET_KEY}
+        networks:
+            - my_network
+
+networks:
+    my_network:
+        name: my_network
+        driver: bridge
+```
+
+The important things are to ensure that the image name is replaced with the name of your ECR Repository.
+
+For this, go to [AWS ECR](https://aws.amazon.com/ecr/), and click on “Create” or “Create repository”.
+
+![AWS ECR Main Screen: Create Repository](/static/images/aws-lambda-fastapi/aws-ecr-create.png)
+
+AWS ECR Main Screen: Create Repository
+
+As with any resource in a cloud service provider, you need to give the appropriate permissions to your account to perform the action you want to perform.
+
+In this case, we will be:
+
+- Authorizing our CLI to get a token to push an image to AWS ECR
+- Tagging and Pushing a docker image
+
+Attach the following Policy for AWS ECR Private repositories:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:CompleteLayerUpload",
+                "ecr:GetAuthorizationToken",
+                "ecr:UploadLayerPart",
+                "ecr:InitiateLayerUpload",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:PutImage"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+If pushing to a Public AWS ECR repository, attach the following AWS-defined policy to your user: `**AmazonElasticContainerRegistryPublicFullAccess**`.
+
+**Note:** Best practice is the restrict the policy to provide the minimum permissions required.
+
+You can modify the “Resource”: “*” to `"Resource": "your_repository_name_goes_here"`.
+
+### Dockerfile.aws.lambda
+
+```docker
+FROM public.ecr.aws/lambda/python:3.12
+
+# Copy your app code
+COPY ./app ${LAMBDA_TASK_ROOT}/app
+
+# Not a good idea, but okay for quick testing. 
+# Store your environment variables in AWS Secrets or 
+# add them to your Lambda Config.
+COPY .env ${LAMBDA_TASK_ROOT}
+
+# Export your dependencies as a requirements.txt
+# Use either `pip freeze > requirements.txt` after activate your python env,
+# or poetry export --format requirements.txt --without-hashes --output requirements.txt
+COPY requirements.txt .
+
+# Install all dependencies to the Lambda task root folder.
+RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}" -U --no-cache-dir
+
+# Start AWS Lambda Handler. This handler manages all communication 
+# between Lambda and your code.
+CMD [ "app.main.handler" ]
+```
+
+Lambda is an event-driven compute service. For our FastAPI app to communicate with Lambda, we need an event handler.
+
+Mangum is a great library that manages the communication between AWS Lambda and your code (FastAPI).
+
+Using Mangum is as easy as adding two lines:
+
+1. `from mangum import Mangum`
+2. `handler = Mangum(app)`
+
+The last line in the Dockerfile `CMD [ "app.main.handler" ]` tells Lambda where to find the handler.
+
+# AWS Deployment
+
+## Build and Push your Docker Image
+
+1. Open [AWS ECR](https://aws.amazon.com/ecr/), and select your repository. 
+2. Click on “View Push Commands”.
+
+![AWS ECR Main screen: Manage Private Repositories](/static/images/aws-lambda-fastapi/aws-ecr-view-push-commands.png)
+
+AWS ECR Main screen: Manage Private Repositories
+
+1. Follow the 4 steps of authentication, building the container, tagging it, pushing it to ECR.
+
+## Create Lambda Function
+
+1. Click on “Create”.
+2. Select container image option.
+    
+    ![Create a Lambda Function using a Container image.](/static/images/aws-lambda-fastapi/aws-lambda-create.png)
+    
+    Create a Lambda Function using a Container image.
+    
+3. Browse and select the container image you want to deploy to AWS Lambda.
+    
+    ![Select the particular image / version you want to deploy to your Lambda Function.](/static/images/aws-lambda-fastapi/aws-lambda-create2.png)
+    
+    Select the particular image / version you want to deploy to your Lambda Function.
+    
+4. Select the architecture of the Lambda function. `arm64` if your computer is a Mac or ARM based computer. `x86_64` if your computer is a Windows / Linux with an AMD or Intel processor. Choose the architecture you used to build the Docker image with. For example, if you used Rosetta on Mac, your architecture might still be `x86_64`.
+    
+    ![Select the correct architecture of your docker container.](/static/images/aws-lambda-fastapi/aws-lambda-create3.png)
+    
+    Select the correct architecture of your docker container.
+    
+
+## Test your Lambda Function
+
+1. Go to the Test tab of your Lambda function and click on “Create new event”, write a meaningful name such as the name of your API you are testing — `ping`, `health-check` etc.
+    
+    ![Create an event to test your Lambda deployment.](/static/images/aws-lambda-fastapi/aws-lambda-test1.png)
+    
+    Create an event to test your Lambda deployment.
+    
+2. Choose a template, (for a REST API, “apigateway-aws-proxy” is a good choice) and edit the JSON.
+    
+    ![Create a test event](/static/images/aws-lambda-fastapi/aws-lambda-test2.png)
+    
+    Create a test event
+    
+3. If your `/health-check` API has the URL `/api/v1/health-check`, and is a `GET` method, change the `"path"` value in the above JSON to `/api/v1/health-check` and the `httpMethod` value to `GET`. Make `“resource”` variable empty with only `"/"` as its value.
+4. Click the orange “Test” button to test!
+
+## API Gateway
+
+Now we need a way to access our Lambda Function from the web.
+
+That’s where the [API Gateway](https://aws.amazon.com/api-gateway/) comes in.
+
+1. Go to the API Gateway and click “Create API”, and select REST API (public not private) and click “Build”.
+    
+    ![Create an API Gateway](/static/images/aws-lambda-fastapi/aws-api-gateway-create.png)
+    
+    Create an API Gateway
+    
+    ![Select REST API and click “Build”](/static/images/aws-lambda-fastapi/aws-api-gateway-create2.png)
+    
+    Select REST API and click “Build”
+    
+2. Give it a meaningful name, and then click “Create resource”. Put `{docs+}` in the Resource name field to allow API Gateway to access all resources on the Lambda Function. Read more about this in the “Proxy resource” info button.
+    
+    ![Create a proxy resource to allow our API Gateway to act as a proxy and access all endpoints.](/static/images/aws-lambda-fastapi/aws-api-gateway-create3.png)
+    
+    Create a proxy resource to allow our API Gateway to act as a proxy and access all endpoints.
+    
+3. Create a Method for this resource. We will add all HTTP methods to allow all methods on all resources. Select “Any” in the Method type drop-down, Lambda Proxy, and select the Lambda Function you created earlier.
+    
+    ![Resource screen: Create Method, Enable CORS, Deploy API Buttons.](/static/images/aws-lambda-fastapi/aws-api-gateway-create4.png)
+    
+    Resource screen: Create Method, Enable CORS, Deploy API Buttons.
+    
+    ![Create Method Screen: Select “Any” in the Method type dropdown, Lambda Proxy, and select the Lambda Function you created earlier.](/static/images/aws-lambda-fastapi/aws-api-gateway-create5.png)
+    
+    Create Method Screen: Select “Any” in the Method type dropdown, Lambda Proxy, and select the Lambda Function you created earlier.
+    
+4. Enable CORS if you need it (you probably will, since you are developing the app and will need to test before going full production mode).
+5. Deploy the API. And re-deploy every-time you make changes. Sometimes, you might forget to click “Deploy API”, and this might lead to wasted time and unnecessary frustration (speaking from other people’s experiences on Reddit, StackOverflow etc.).
+    
+    ![Deploy API Screen: Give a good stage name — this name will be part of the API Gateway URL.](/static/images/aws-lambda-fastapi/aws-api-gateway-create6.png)
+    
+    Deploy API Screen: Give a good stage name — this name will be part of the API Gateway URL.
+    
+6. Check out the new Stage you created, and use the “Invoke URL” to access your API!
+
+# Done
+
+You API is now deployed to AWS Lambda, and you should be able to access it using an API Gateway proxy.
+
+Awesome!
+
+# References and further reading
+
+- What is AWS Lambda? [https://docs.aws.amazon.com/lambda/latest/dg/welcome.html](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+- Mangum — The adapter to run FastAPI in AWS Lambda [https://mangum.fastapiexpert.com/](https://mangum.fastapiexpert.com/)
+- The Free Tier trap — An excellent blog post by Larry Myers [https://www.larrymyers.com/posts/the-free-tier-trap/](https://www.larrymyers.com/posts/the-free-tier-trap/)
+- Dockerfile [https://docs.docker.com/build/concepts/dockerfile/](https://docs.docker.com/build/concepts/dockerfile/)
+- Digital Ocean on Serverless deployment [https://www.digitalocean.com/resources/articles/aws-lambda-vs-digitalocean-functions](https://www.digitalocean.com/resources/articles/aws-lambda-vs-digitalocean-functions)

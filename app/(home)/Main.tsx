@@ -29,7 +29,7 @@ export default function Home({ posts }) {
         <Heading />
       </MainSectionContainer>
       <div>
-        <SectionContainer>
+        <MainSectionContainer>
           <Showcase />
           {/* {siteMetadata.newsletter?.provider && (
             <div className="flex items-center justify-center pt-4">
@@ -40,7 +40,7 @@ export default function Home({ posts }) {
             orientation="horizontal"
             className="border-t border-gray-300 dark:border-white"
           />
-        </SectionContainer>
+        </MainSectionContainer>
       </div>
     </>
   )

@@ -1,0 +1,65 @@
+---
+draft: false
+type: Blog
+layout: PostLayout
+slug: "bugs-when-porting-from-c-to-python"
+title: "Bugs when porting from C to Python"
+authors: ['default']
+date: "2021-12-02"
+lastmod: "2021-12-02"
+summary: "When porting code from one language to another, we can often introduce unexpected bugs into our code. In this post, I explore one such bug and how to avoid it."
+# description: "An article on common bugs when porting from one language to another."
+# keywords:
+#     - c
+#     - dynamic programming
+#     - python
+#     - bugs
+tags:
+    - c
+    - dynamic programming
+    - python
+    - bugs
+    - computer science
+---
+
+## Introduction
+
+When porting code from one language to another, we can often introduce unexpected bugs into our code. I want to address a bug I recently encountered while porting a c program into python, so that you don't have to spend hours trying to figure out where your program is making the mistake.
+
+## Iteration Bug:
+
+Consider the following c code. Say you are reusing the lastest value of `i`, in the following code, elsewhere.
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    int i = 0;
+    for (i = 0; i < 10; i++) {
+        continue;
+    }
+    printf("%d\n", i);
+    return 0;
+}
+>>> 10
+```
+
+C language has incremented variable `i` to 10 and checked whether it is greater than 10. Thus, `i` is now `10` instead of `9`.
+
+When we do the same in python however, we don't get the same result.
+
+```python
+i = 0
+for i in range(10):
+    continue
+
+print(i)
+>>> 9
+```
+
+Python has first checked whether `i + 1` is less than 10, and only increments `i` if the condition holds true.
+
+I know this was super short.
+I'll try to keep updating this article as I find more such potential bugs.
+
+I hope this will be useful when you try porting code from one language to another.

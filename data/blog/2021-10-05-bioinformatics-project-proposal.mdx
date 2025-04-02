@@ -1,0 +1,108 @@
+---
+draft: false
+type: Blog
+layout: PostLayout
+title: "Bioinformatics Project Proposal - Computing baits for metagenome analysis"
+authors: ['default']
+date: "2021-10-05"
+lastmod: "2021-10-05"
+slug: "bioinformatics-proj-proposal"
+# canonicalUrl: "/blog/mutability-in-python"
+summary: "For our bioinformatics project, we had to come up with a project idea, and create a proposal webpage, where we outline the Team, Topic, Goals, Plan of Action, Workload Distribution and References."
+# description: "A blog post documenting our Bio-Informatics project proposal."
+tags:
+    - bioinformatics
+    - genome
+    - dna
+    - c
+    - python
+    - biopython
+    - dynamic programming
+    - project
+    - computer science
+# keywords:
+#     - bioinformatics
+#     - genome
+#     - dna
+#     - c
+#     - python
+#     - biopython
+#     - dynamic programming
+#     - project
+---
+
+# Computing baits for metagenome analysis 
+
+### Team members 
+<table>
+<tr>
+<td>
+Anurag Shenoy
+</td>
+</tr>
+<tr>
+<td>
+Harsh Soni
+</td>
+</tr>
+</table>
+
+
+### Abstract 
+DNA bait and capture techniques can revolutionize the field of metagenomic sequencing especially in the field of infectious disease research by allowing for rapid identification and characterization of a particular microbial species. DNA bait and capture involves the use of a set of short DNA sequences (baits or probes) which bind to and thus, capture metagenomic sequences. As the number of baits determines the cost of performing the metagenomic sequencing using bait and capture technique, minimizing the number baits will reduce the cost of performing research. 
+
+In this project, we aim to design an efficient algorithm to find the optimal set of baits/probes which can be used to cover the metagenomic sequences and capture them. 
+
+### Goals 
+ - Finding the optimal set of baits i.e., having minimum cardinality, to reduce the cost of purchasing baits. 
+ - Getting results in reasonable time and using reasonable compute, which are critical in scenarios such as a viral outbreak. 
+ - To design a solution that scales with input size and is tweakable for parameters such as error tolerance. 
+
+### Datasets 
+We will obtain viral and bacterial DNA sequences from the https://www.ncbi.nlm.nih.gov/genbank/ genetic sequence database in FASTA format. 
+
+### Plan of Action 
+
+ - #### Problem Definition 
+ First, we will state the problem mathematically, and compare it with existing problems such as minimum set cover problem and closest string problem in mathematics and computer science to estimate the complexity (in terms of algorithm analysis) of the solution. 
+ - #### Problem Solution 
+ Then we arrive at an algorithm that gives us the optimal solution by exploring methods such as dynamic programming. We will denote the steps of our algorithm and prove the correctness as well as time and space complexity of the algorithm. 
+ - #### Solution Implementation 
+ Finally, we will implement our algorithm using Python and document the results for varying datasets. We will also tweak the parameters of our algorithm to account for efficiency in exceptional scenarios. 
+
+### Workload Distribution 
+
+#### Anurag Shenoy 
+ - Reading related research papers and discovering novel methods to arrive at an optimal solution. 
+ - Implementation of new algorithms and data structures using Python. 
+ - Experimentation and testing with varying datasets and visualizing efficiency. 
+
+#### Harsh Soni 
+ - Reading related research papers and discovering novel methods to arrive at an optimal solution. 
+ - Formalizing methods, theorems and proofs using LaTeX. 
+ - Code documentation and maintenance. 
+
+### Milestones 
+
+<table>
+<tr>
+<th width="20%">
+Date
+</th>
+<th width="80%">
+Description
+</th>
+</tr>
+<tr>
+<td width="20%">
+September 21, 2021
+</td>
+<td width="80%">
+Obtained a write-up, code by Professor Tamer and access to a private git repository that tries to solve the problem using a dynamic programming algorithm implemented using C/C++.
+</td>
+</tr>
+</table>
+
+### Reference Material 
+1. CATCH Paper Metsky, Hayden C., Katherine J. Siddle, Adrianne Gladden-Young, James Qu, David K. Yang, Patrick Brehio, Andrew Goldfarb et al. "Capturing sequence diversity in metagenomes with comprehensive and scalable probe design." Nature biotechnology 37, no. 2 (2019): 160-168. https://www.nature.com/articles/s41587-018-0006-x
+2. CATCH Implementation https://github.com/broadinstitute/catch

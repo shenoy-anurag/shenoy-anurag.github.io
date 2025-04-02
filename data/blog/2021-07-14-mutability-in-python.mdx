@@ -1,0 +1,169 @@
+---
+draft: false
+type: Blog
+title: Mutability in Python
+# author: "Anurag Shenoy"
+authors: ['default']
+date: '2021-07-14'
+lastmod: '2021-07-14'
+# layout: PostBanner
+tags: ['python', 'mutability', 'variables', 'data-types', 'computer-science']
+# keywords:
+#     - python
+#     - mutability
+#     - immutable
+#     - mutable
+#     - variables
+#     - data-types
+slug: "mutability-in-python"
+# canonicalUrl: "/blog/mutability-in-python"
+# images: ['/static/images/canada/mountains.jpg']
+summary: In this article, we'll understand what mutable and immutable variables are, and how we can prevent bugs in our code by using them correctly.
+# description: "An article on mutable vs. immutable variables in Python, and best practices."
+---
+
+This is my first post on my site and I plan to cover various topics within Computer Science and on other topics that I'm interested in.
+
+## Introduction
+
+In Python, understanding what mutable and immutable variables are will greatly reduce the chances of accidentally introducing bugs in your code.
+
+Variables can either be mutable or immutable. Let us explore both types and see the ways in which we might inadvertently introduce bugs.
+
+Variables are a name we give to values we want to store in memory. This name is used by us, the developers, to keep track of different values and the interpreter keeps track of it's memory location. The value present at that location is the value of the variable.
+
+Let's see which data types/data structures are mutable or immutable in python.
+
+## Immutable:
+    - Booleans
+    - Numbers (int, float, decimal etc)
+    - Strings
+    - Tuples
+    - Frozen Sets
+
+Let's take a look at numbers first:
+```python
+a = 10
+b = a
+b += 1
+
+print(a, b)
+>>> 10 11
+```
+In this example, you can see that `a` was assigned the integer `10`, and then `b` was assigned `a`.
+
+At this point, both a and b reference the same value in memory, but due to the fact that any arithmetic operation on integers returns a value (it essentially assigns the result to a new location in memory), both variables now can have differing values as `int` is a immutable type.
+
+Although there's no real way of knowing the memory location of a variable in Python, we do have a `CPython` function `id` which returns a unique id which represents that python object.
+
+You can see that a and b are both referencing the same variable:
+```python
+a = 10
+b = a
+print(hex(id(a)))
+>>> 0x7ffa61c1d7c0
+print(id(b))
+>>> 0x7ffa61c1d7c0
+b = b + 1
+print(id(b))
+>>> 0x7ffa61c1d7e0
+```
+However, once we perform any arithmetic operation, the memory location has changed.
+
+This is also the case with strings:
+```python
+s = "I love icecream."
+print(s)
+>>> I love icecream.
+print(hex(id(s)))
+>>> 0x186844481c0
+s = s + " I also like mangoes."
+print(s)
+>>> I love icecream. I also like mangoes.
+print(hex(id(s)))
+>>> 0x186843f7990
+```
+
+Note: `None`, `True` and `False` are different. The python interpreter has only a single memory location for each of these values and thus assigning any variable any of these three values results in the same id everytime.
+```python
+a = None
+print(hex(id(a)))
+>>> 0x7ffa58175880
+a = True
+print(hex(id(a)))
+>>> 0x7ffa58169750
+a = False
+print(hex(id(a)))
+>>> 0x7ffa58169770
+a = True
+print(hex(id(a)))
+>>> 0x7ffa58169750
+a = None
+print(hex(id(a)))
+>>> 0x7ffa58175880
+```
+
+
+## Mutable:
+    - Lists
+    - Sets
+    - Dictionaries
+
+Mutable values can be changed without the need of assigning the changed value a completely new location in memory.
+
+Let's take a dictionary as an example:
+```python
+a = {'name': 'Raj', 'interests': ['computer science', 'music', 'astronomy']}
+print(hex(id(a)))
+>>> 0x282f0a8f900
+a['age'] = 25
+print(a)
+>>> {'name': 'Raj', 'interests': ['computer science', 'music', 'astronomy'], 'age': 25}
+print(hex(id(a)))
+>>> 0x282f0a8f900
+```
+
+We can see that although we modified the dictionary, the memory location of the dictionary has not changed, and thus dictionaries are mutable objects in python.
+
+Not knowing that `int` variables are immutable or that `dict` variables are, may result in bugs.
+
+```python
+a = {'a': 1}
+b = a
+b['a'] = 2
+print(a)
+>>> {'a': 2}
+print(b)
+>>> {'a': 2}
+```
+
+Remember that any data type or data structure derived from these basic types will also share the same mutability/immutability.
+
+`datetime` objects also are immutable as the functions which you use to modify the datetime object all return values instead of changing them in place. The `replace` function is used in the example.
+```python
+import datetime
+
+new_date = datetime.datetime(year=2000, month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+print(new_date)
+>>> 2000-01-01 00:00:00
+print(hex(id(new_date)))
+>>> 0x2b38fec6180
+new_date = new_date.replace(year=2049)
+print(new_date)
+>>> 2049-01-01 00:00:00
+print(hex(id(new_date)))
+>>> 0x2b38fdb1300
+```
+<br />
+You can find the code here:
+
+https://gist.github.com/shenoy-anurag/9054082f4d13d8fc586b0cfdac166631
+
+<br />
+I hope this was useful. I plan to write more such tutorials in the future. Writing such posts are also a great way for me to learn/re-inforce something I have learnt.
+
+
+### References:
+1. Python Fundamentals by Ryan Marvin , Mark Ng’ang’a , Amos Omondi. https://www.packtpub.com/product/python-fundamentals/9781789807325
+2. Mutability https://www.pitt.edu/~naraehan/python3/mutability.html
+3. id() function https://www.w3schools.com/python/ref_func_id.asp

@@ -1,0 +1,129 @@
+---
+draft: false
+type: Blog
+layout: PostLayout
+slug: "elo-viz"
+title: "Elo Viz: A tool to create players, simulate matches, and rank players using Elo ratings"
+authors: ['default']
+date: "2025-02-04"
+lastmod: "2025-02-04"
+summary: "Elo python package to simulate matches between players, and compare their elo ratings after each match. You can use it to simulate rankings of Chess players."
+# description: "A blog post on my python package which can be used to simulate and calculate Elo scores of players."
+# keywords:
+#     - python
+#     - object-oriented-programming
+#     - elo
+#     - package
+#     - pypi
+tags:
+    - python
+    - project
+    - elo
+    - games
+    - package
+    - ci/cd
+---
+
+## Overview
+Inspired by [Chatbot Arena](https://lmarena.ai/?leaderboard), and Chess, I wanted to create my own python package for Elo ratings.
+
+### What is Elo-Viz?
+
+Elo python package to simulate matches between players, and compare their elo ratings after each match, and visualize them. You can use it to simulate rankings of Chess players.
+
+Published to Python Package Index (PyPI)!
+https://pypi.org/project/elo-viz/
+
+```python
+import uuid
+from elo_viz import Match, Player
+
+magnus_carlsen = Player(id=uuid.uuid4().hex, name='Magnus Carlsen', rating=2833)
+
+m1 = Match(match_id=uuid.uuid4().hex, player1=magnus_carlsen, player2=gukesh_d)
+m1.update_result(winner=magnus_carlsen.id)
+
+print(m1.player1)
+```
+Output
+```log
+Player: Magnus Carlsen Rating: 2883.0 Win %: 100.0
+```
+
+## Installation
+
+Install using pip:
+
+```text
+pip install elo-viz
+```
+
+or with [Poetry](https://python-poetry.org/):
+
+```text
+poetry add elo-viz
+```
+
+## Usage
+### Create Players
+```python
+import uuid
+from elo_viz import Match, Player
+
+magnus_carlsen = Player(id=uuid.uuid4().hex, name='Magnus Carlsen', rating=2833)
+hou_yifan = Player(id=uuid.uuid4().hex, name='Hou Yifan', rating=2633)
+gukesh_d = Player(id=uuid.uuid4().hex, name='Gukesh Dommaraju', rating=2777)
+divya_d = Player(id=uuid.uuid4().hex, name='Divya Deshmukh', rating=2490)
+```
+
+### Setup Matches
+```python
+m1 = Match(match_id=uuid.uuid4().hex, player1=magnus_carlsen, player2=gukesh_d)
+m1.update_result(winner=magnus_carlsen.id)
+```
+
+### Check results
+```python
+print(m1.player1)
+```
+Output
+```log
+Player: Magnus Carlsen Rating: Rating: 2883.0 Win %: 100.0
+```
+
+## Requirements
+- Python >= 3.13
+
+The version of the base environment I had installed poetry in.
+
+Will update this so that any Python 3 version will work.
+
+## Future plans
+
+The package is fully functional for basic elo rating calculations.
+
+However, it is in the planning phase, and I plan to add many more features over time.
+
+The plan is to allow the user to easily create simulations, and display rankings.
+
+Eventually, I'll use Seaborn to visualize elo rating histories, rankings, and more.
+
+## Tools used
+### Poetry
+https://python-poetry.org/
+
+Package and environment management.
+
+### GitHub Actions
+https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
+
+CI/CD to publish your package to PyPI whenever a certain event occurs.
+
+In my case, I chose that event to be whenever I decide to create a release.
+
+## References and Further Reading
+1. Elo rating basics https://www.omnicalculator.com/sports/elo#how-to-find-elo-rating-change
+2. John Franey's excellent blog post on how to setup your package for publishing to PyPI https://johnfraney.ca/blog/how-to-publish-a-python-package-with-poetry-and-github-actions/
+3. LMArena https://lmarena.ai/?leaderboard
+4. PyPI https://pypi.org/
+5. PyPI Classifiers (to properly categorize your package) https://pypi.org/classifiers/

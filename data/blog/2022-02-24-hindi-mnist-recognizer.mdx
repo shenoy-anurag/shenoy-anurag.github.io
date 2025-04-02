@@ -1,0 +1,616 @@
+---
+draft: false
+type: Blog
+layout: PostLayout
+slug: "hindi-mnist-recognizer"
+title: "Hindi (Devanagari Script) Digit Recognizer using Convolutional Neural Networks"
+authors: ['default']
+date: "2022-02-24"
+lastmod: "2022-02-24"
+summary: "Tutorial style Jupyter notebook on how to classify hindi (devanagari script) digits using Convolutional Neural Networks."
+# description: "A blog post on classifying handwritten Hindi digits using computer vision models."
+# keywords:
+#     - machine learning
+#     - deep learning
+#     - python
+#     - hindi
+#     - linguistics
+#     - classification
+#     - CNN
+#     - neural networks
+tags:
+    - machine learning
+    - deep learning
+    - python
+    - linguistics
+    - classification
+    - CNN
+    - neural networks
+    - computer vision
+---
+
+## Overview
+
+While trying to create an MNIST like personal project, but on Indian languages such as Hindi, Kannada or Tamil, I stumbled upon a Hindi (Devangari script) Handwritten characters dataset by Shailesh Acharya and Prashnna Kumar Gyawali, which is uploaded to the [UCI Machine Learning Repository](http://archive.ics.uci.edu/ml).
+
+You can find the dataset here: https://archive.ics.uci.edu/ml/datasets/Devanagari+Handwritten+Character+Dataset
+
+This dataset contains all Devanagari characters and I only wanted to use the digit glyphs for classification, so I downloaded the complete dataset, and removed any data which was not a digit.
+
+## Dataset
+Data Type: Grayscale Image
+
+Image Format: PNG
+
+Resolution: 32 x 32 pixels
+
+Actual character is centered within 28 by 28 pixel, padding of 2 pixel is added on all four sides of actual character.
+
+There are ~1700 images per class in the Train set, and around ~300 images per class in the Test set.
+
+## Tutorial-Style Notebook
+
+You can find the full Jupyter notebook here: https://github.com/shenoy-anurag/machine-learning/blob/main/hindi-digit-recognition.ipynb
+
+We begin by importing libraries which are important for our data-preprocessing, neural network building, model saving and visualization.
+
+```python
+import os
+import pickle as pkl
+
+import tensorflow as tf
+import keras
+from keras.preprocessing.image import image_dataset_from_directory
+from keras import layers
+from matplotlib import pyplot as plt
+import seaborn as sns
+
+print(f"Tensor Flow Version: {tf.__version__}")
+print(f"Keras Version: {keras.__version__}")
+```
+
+>    Tensor Flow Version: 2.7.0
+>    Keras Version: 2.7.0
+
+
+### Downloading the Data
+
+
+```python
+DATA_FOLDER = "./data"
+
+hindi_handwritten_dataset_zip_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00389/DevanagariHandwrittenCharacterDataset.zip"
+zip_file_name = hindi_handwritten_dataset_zip_url.rsplit('/', 1)[1]
+
+TRAIN_FOLDER_NAME = "Train"
+TEST_FOLDER_NAME = "Test"
+DEVANAGARI_ZIP_PATH = os.path.join(DATA_FOLDER, zip_file_name)
+DEVANAGARI_DATA_FOLDER = os.path.join(
+    os.path.join(DATA_FOLDER, zip_file_name.rsplit(".")[0])
+)
+print(DEVANAGARI_DATA_FOLDER)
+```
+
+>    ./data/DevanagariHandwrittenCharacterDataset
+
+
+
+```python
+# Download the dataset and de-compress
+import requests
+import zipfile
+
+if not os.path.exists(DEVANAGARI_ZIP_PATH):
+    req = requests.get(hindi_handwritten_dataset_zip_url, allow_redirects=True)
+    # Writing the file to the local file system
+    with open(DEVANAGARI_ZIP_PATH, 'wb') as output_file:
+        output_file.write(req.content)
+    print("Downloaded zip file")
+else:
+    print("Zip file already present")
+
+if not os.path.exists(DEVANAGARI_DATA_FOLDER):
+    with zipfile.ZipFile(DEVANAGARI_ZIP_PATH, 'r') as zip_ref:
+        zip_ref.extractall(DATA_FOLDER)
+    print("Extracted zip file")
+else:
+    print("Files already present on disk")
+```
+
+>    Zip file already present
+>    Files already present on disk
+
+
+### Removing classes we don't want
+
+
+```python
+labels_to_keep = [
+    "digit_0", "digit_1", "digit_2", "digit_3", "digit_4", "digit_5", "digit_6", "digit_7", "digit_8", "digit_9"
+]
+```
+
+
+```python
+import shutil
+import glob
+
+# We will only keep the Hindi digits in training data.
+folders = glob.glob(os.path.join(DEVANAGARI_DATA_FOLDER, TRAIN_FOLDER_NAME, "*"))
+for f in folders:
+    if f.rsplit("/")[-1] not in labels_to_keep:
+        try:
+            shutil.rmtree(f)
+        except OSError as e:
+            print("Error: %s : %s" % (f, e.strerror))
+
+# Doing the same to test data.
+folders = glob.glob(os.path.join(DEVANAGARI_DATA_FOLDER, TEST_FOLDER_NAME, "*"))
+for f in folders:
+    if f.rsplit("/")[-1] not in labels_to_keep:
+        try:
+            shutil.rmtree(f)
+        except OSError as e:
+            print("Error: %s : %s" % (f, e.strerror))
+```
+
+### Dataset and Model Parameters
+
+
+```python
+RANDOM_SEED = 42
+
+# Data parameters
+IMG_HEIGHT = 32
+IMG_WIDTH = 32
+VALIDATION_SPLIT = 0.1
+
+# Model parameters
+BATCH_SIZE = 32
+KERNEL_SIZE = (3, 3)
+MAX_POOLING_SIZE = (2, 2)
+DROPOUT = 0.5
+
+num_classes = len(labels_to_keep)
+```
+
+
+```python
+classes = labels_to_keep
+classes_to_output_class_names = {
+    "digit_0": "0", "digit_1": "1", "digit_2": "2", "digit_3": "3", 
+    "digit_4": "4", "digit_5": "5", "digit_6": "6", "digit_7": "7", 
+    "digit_8": "8", "digit_9": "9"
+}
+
+print("Gathering training dataset...")
+train_dataset = image_dataset_from_directory(
+    os.path.join(DEVANAGARI_DATA_FOLDER, TRAIN_FOLDER_NAME),
+    labels="inferred",
+    label_mode="int",
+    class_names=classes,
+    color_mode="grayscale",
+    batch_size=BATCH_SIZE,
+    image_size=(IMG_HEIGHT, IMG_WIDTH),
+    shuffle=True,
+    seed=RANDOM_SEED,
+    validation_split=VALIDATION_SPLIT,
+    subset="training",
+    interpolation="bilinear",
+    follow_links=False,
+    crop_to_aspect_ratio=False,
+)
+
+print("Gathering validation dataset...")
+val_dataset = image_dataset_from_directory(
+    os.path.join(DEVANAGARI_DATA_FOLDER, TRAIN_FOLDER_NAME),
+    labels="inferred",
+    label_mode="int",
+    class_names=classes,
+    color_mode="grayscale",
+    batch_size=BATCH_SIZE,
+    image_size=(IMG_HEIGHT, IMG_WIDTH),
+    shuffle=True,
+    seed=RANDOM_SEED,
+    validation_split=VALIDATION_SPLIT,
+    subset="validation",
+    interpolation="bilinear",
+    follow_links=False,
+    crop_to_aspect_ratio=False,
+)
+
+print("Gathering test dataset...")
+test_dataset = image_dataset_from_directory(
+    os.path.join(DEVANAGARI_DATA_FOLDER, TEST_FOLDER_NAME),
+    labels="inferred",
+    label_mode="int",
+    class_names=classes,
+    color_mode="grayscale",
+    batch_size=BATCH_SIZE,
+    image_size=(IMG_HEIGHT, IMG_WIDTH),
+    shuffle=True,
+    seed=RANDOM_SEED,
+    validation_split=None,  # None, so that we get all the data.
+    subset=None,
+    interpolation="bilinear",
+    follow_links=False,
+    crop_to_aspect_ratio=False,
+)
+```
+
+>    Gathering training dataset...
+>    Found 17000 files belonging to 10 classes.
+>    Using 15300 files for training.
+>    Metal device set to: Apple M1
+>    Gathering validation dataset...
+>
+>
+>    2022-02-23 23:32:59.540309: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+>    2022-02-23 23:32:59.540429: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+>
+>
+>    Found 17000 files belonging to 10 classes.
+>    Using 1700 files for validation.
+>    Gathering test dataset...
+>    Found 3000 files belonging to 10 classes.
+
+The tensorflow Dataset object automatically performs ordinal encoding on the labels and so, we are creating our own ordinal encoding and storing it in the variable `labels_to_class_names`.
+
+```python
+class_names_to_labels = dict([(cls_name, lbl) for cls_name, lbl in zip(classes, list(range(len(classes))))])
+labels_to_class_names = dict([(v, k) for k, v in class_names_to_labels.items()])
+print(labels_to_class_names)
+```
+
+>    {0: 'digit_0', 1: 'digit_1', 2: 'digit_2', 3: 'digit_3', 4: 'digit_4', 5: 'digit_5', 6: 'digit_6', 7: 'digit_7', 8: 'digit_8', 9: ?'digit_9'}
+
+
+### Look at the data
+Let us take a look at the data after it has been stored as a tensorflow tf.Data.Dataset object.
+
+
+```python
+# Take a look at the input data
+rows = 2
+columns = 3
+fig = plt.figure(figsize=(10, 8))
+j = 1
+for images, labels in train_dataset.take(1):
+    for i, l in zip(images[:6], labels[:6]):
+        fig.add_subplot(rows, columns, j)
+        plt.imshow(tf.squeeze(i), cmap='gray', vmin=0, vmax=255)
+        plt.title(labels_to_class_names[int(l)])
+        j += 1
+```
+
+![random devanagari digits](/static/images/hindi-mnist/output_13_2.jpg)
+
+
+### Data Augmentation and Normalisation
+#### Normalisation
+
+The values of pixels in the images range from `[0, 255]`.
+
+We should normalize the values to be in the `[0, 1]` range.
+
+The purpose of Normalisation is to make values measured on different scales to be all "squished" or "expanded" to a common scale/range such as `[0, 1]`.
+This ensures that each variable in the data is given an equal importance and no variable influences the model parameters more than any other purely because it's values are larger.
+
+We will perform the normalization using <a href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Rescaling"><code>tf.keras.layers.Rescaling</code></a>.
+
+#### Augmentation
+Augmenting the data allows us to ensure that the model doesn't just learn something that's common for the entire class, but has no meaning when it comes to classification.
+
+For example, consider a dataset with blue cars and red cars.
+
+If all the blue cars are facing to the right and all red cars are facing left, then the model will end up being influenced by the orientation of the car in the image, thus producing incorrect predications when you ask the model to predict, say, the color of a blue car facing to the left.
+
+By performing augmentations such as Flipping, Rotations, Zooming, Shearing, Translations etc, we prevent the model from learning/memorizing features which are irrelevant.
+
+
+```python
+# Scale images to the [0, 1] range
+normalization_layer = layers.Rescaling(1. / 255)
+# Data Augmentations
+with tf.device('/CPU:0'):
+    data_augmentation_layers = keras.Sequential(
+        [
+            layers.RandomZoom(0.05),
+            layers.RandomTranslation(0.05, 0.05),
+        ]
+    )
+```
+
+### Prefetch and Caching
+Learn about tf.data.Dataset Prefetching here: https://www.tensorflow.org/api_docs/python/tf/data/Dataset#prefetch
+Learn about tf.data.Dataset Caching here: https://www.tensorflow.org/api_docs/python/tf/data/Dataset#cache
+
+
+```python
+# prefetching and caching data to improve performance.
+AUTOTUNE = tf.data.AUTOTUNE
+
+train_ds = train_dataset.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
+val_ds = val_dataset.cache().prefetch(buffer_size=AUTOTUNE)
+```
+
+### Checking Data Augmentation
+
+
+```python
+rows = 3
+columns = 4
+for images, _ in train_dataset.take(1):
+    plt.imshow(tf.squeeze(images[0]), cmap='gray', vmin=0, vmax=255)
+    fig = plt.figure(figsize=(10, 12))
+    for i in range(12):
+        with tf.device('/CPU:0'):
+            augmented_images = data_augmentation_layers(images)
+        fig.add_subplot(rows, columns, i + 1)
+        # plt.imshow(augmented_images[0].numpy().astype("uint8"))
+        plt.imshow(tf.squeeze(augmented_images[0]), cmap='gray', vmin=0, vmax=255)
+        plt.axis("off")
+```
+
+
+![first devanagari digit](/static/images/hindi-mnist/output_19_0.jpg)
+
+
+![augmented digits](/static/images/hindi-mnist/output_19_1.jpg)
+
+
+### Creating the Model
+
+First, we'll add the `data_augmentation_layers` and the `normalization_layer`, following which we'll create a convolutional neural network.
+
+Learn more about CNNs here: https://machinelearningmastery.com/convolutional-layers-for-deep-learning-neural-networks/
+
+
+```python
+model = keras.Sequential(
+    [
+        data_augmentation_layers,
+        normalization_layer,
+        layers.Conv2D(32, kernel_size=KERNEL_SIZE, activation="relu"),
+        layers.MaxPooling2D(pool_size=MAX_POOLING_SIZE),
+        layers.Conv2D(64, kernel_size=KERNEL_SIZE, activation="relu"),
+        layers.MaxPooling2D(pool_size=MAX_POOLING_SIZE),
+        layers.Dropout(DROPOUT),
+        layers.Flatten(),
+        layers.Dense(128, activation='relu'),
+        layers.Dense(num_classes, activation="softmax"),
+    ]
+)
+```
+
+### Compiling and Building Model
+Note that we are using Categorical Crossentropy as the loss function, and this is well suited for categorical output data.
+Read more here: https://en.wikipedia.org/wiki/Cross_entropy#Cross-entropy_loss_function_and_logistic_regression
+
+
+```python
+model.compile(optimizer='adam',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['accuracy'])
+model.build(input_shape=(BATCH_SIZE, IMG_HEIGHT, IMG_WIDTH, 1))
+model.summary()
+```
+
+    Model: "sequential_1"
+    _________________________________________________________________
+     Layer (type)                Output Shape              Param #   
+    =================================================================
+     sequential (Sequential)     (32, 32, 32, 1)           0         
+                                                                     
+     rescaling (Rescaling)       (32, 32, 32, 1)           0         
+                                                                     
+     conv2d (Conv2D)             (32, 30, 30, 32)          320       
+                                                                     
+     max_pooling2d (MaxPooling2D  (32, 15, 15, 32)         0         
+     )                                                               
+                                                                     
+     conv2d_1 (Conv2D)           (32, 13, 13, 64)          18496     
+                                                                     
+     max_pooling2d_1 (MaxPooling  (32, 6, 6, 64)           0         
+     2D)                                                             
+                                                                     
+     dropout (Dropout)           (32, 6, 6, 64)            0         
+                                                                     
+     flatten (Flatten)           (32, 2304)                0         
+                                                                     
+     dense (Dense)               (32, 128)                 295040    
+                                                                     
+     dense_1 (Dense)             (32, 10)                  1290      
+                                                                     
+    =================================================================
+    Total params: 315,146
+    Trainable params: 315,146
+    Non-trainable params: 0
+    _________________________________________________________________
+
+
+
+```python
+epochs = 15
+history = model.fit(
+    train_dataset,
+    validation_data=val_dataset,
+    epochs=epochs
+)
+```
+
+>    Epoch 1/15
+
+
+>    2022-02-23 23:33:01.336773: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:112] Plugin optimizer for device_type GPU is enabled.
+
+
+>    479/479 [==============================] - ETA: 0s - loss: 0.3290 - accuracy: 0.8952
+
+>    2022-02-23 23:33:09.665198: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:112] Plugin optimizer for device_type GPU is enabled.
+
+
+>    479/479 [==============================] - 9s 18ms/step - loss: 0.3290 - accuracy: 0.8952 - val_loss: 0.0485 - val_accuracy: 0.9865
+>    Epoch 2/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0899 - accuracy: 0.9727 - val_loss: 0.0420 - val_accuracy: 0.9871
+>    Epoch 3/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0578 - accuracy: 0.9808 - val_loss: 0.0216 - val_accuracy: 0.9924
+>    Epoch 4/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0450 - accuracy: 0.9856 - val_loss: 0.0171 - val_accuracy: 0.9935
+>    Epoch 5/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0373 - accuracy: 0.9882 - val_loss: 0.0191 - val_accuracy: 0.9918
+>    Epoch 6/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0345 - accuracy: 0.9892 - val_loss: 0.0086 - val_accuracy: 0.9976
+>    Epoch 7/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0284 - accuracy: 0.9908 - val_loss: 0.0097 - val_accuracy: 0.9965
+>    Epoch 8/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0212 - accuracy: 0.9941 - val_loss: 0.0110 - val_accuracy: 0.9959
+>    Epoch 9/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0246 - accuracy: 0.9919 - val_loss: 0.0142 - val_accuracy: 0.9953
+>    Epoch 10/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0195 - accuracy: 0.9934 - val_loss: 0.0104 - val_accuracy: 0.9953
+>    Epoch 11/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0173 - accuracy: 0.9945 - val_loss: 0.0126 - val_accuracy: 0.9965
+>    Epoch 12/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0177 - accuracy: 0.9944 - val_loss: 0.0097 - val_accuracy: 0.9971
+>    Epoch 13/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0152 - accuracy: 0.9947 - val_loss: 0.0081 - val_accuracy: 0.9971
+>    Epoch 14/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0152 - accuracy: 0.9952 - val_loss: 0.0321 - val_accuracy: 0.9912
+>    Epoch 15/15
+>    479/479 [==============================] - 8s 17ms/step - loss: 0.0144 - accuracy: 0.9953 - val_loss: 0.0176 - val_accuracy: 0.9941
+
+
+### Measuring Performance on Training and Test Data
+
+
+```python
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
+
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+
+epochs_range = range(1, epochs + 1)
+
+fig = plt.figure(figsize=(15, 5))
+fig.add_subplot(1, 2, 1)
+sns.lineplot(x=epochs_range, y=acc, legend='brief', label='Training Accuracy')
+sns.lineplot(x=epochs_range, y=val_acc, legend='brief', label='Validation Accuracy')
+
+fig.add_subplot(1, 2, 2)
+sns.lineplot(x=epochs_range, y=loss, legend='brief', label='Training Loss')
+sns.lineplot(x=epochs_range, y=val_loss, legend='brief', label='Validation Loss')
+plt.show()
+```
+
+
+![model metrics graph](/static/images/hindi-mnist/output_26_0.jpg)
+
+
+### Metrics
+
+| Data       | Accuracy | Loss   |
+|:-----------|:--------:|-------:|
+| Training   | 99.52%   | 0.0139 |
+| Validation | 99.65%   | 0.0107 |
+
+
+We can see that the model's accuracy and validation accuracy quickly went up during and after the first epoch and then it saturated around epoch #10. 
+
+Training and validation loss also fell dramatically after the second epoch, and reached a saturation around epoch #11.
+
+
+```python
+print("Evaluate")
+result = model.evaluate(test_dataset)
+result = dict(zip(model.metrics_names, result))
+```
+
+>    Evaluate
+>    94/94 [==============================] - 1s 8ms/step - loss: 0.0242 - accuracy: 0.9953
+
+
+### Test Metrics
+
+| Data | Accuracy |   Loss |
+|:-----|:--------:|-------:|
+| Test |  99.56%  | 0.0189 |
+
+#### Overall this is a great result, and it shows that the model has generalized properly and has low variance, while having high bias.
+
+### Saving the Model
+
+
+```python
+MODEL_FOLDER = "./models"
+HINDI_MNIST_FOLDER = "hindi_mnist"
+MODEL_SAVE_FOLDER = os.path.join(MODEL_FOLDER, HINDI_MNIST_FOLDER)
+MODEL_SAVE_PATH = os.path.join(MODEL_FOLDER, HINDI_MNIST_FOLDER, "model.h5")
+# pickle files
+CLASSES_PKL_FILE = "classes.pickle"
+CLASSES_PKL_PATH = os.path.join(MODEL_SAVE_FOLDER, CLASSES_PKL_FILE)
+```
+
+
+```python
+model.save(
+    MODEL_SAVE_PATH, overwrite=True, include_optimizer=True, save_format=None,
+    signatures=None, options=None, save_traces=True
+)
+```
+
+
+```python
+with open(CLASSES_PKL_PATH, 'wb') as f:
+    pkl.dump(classes, f)
+    pkl.dump(labels_to_class_names, f)
+```
+
+
+```python
+# Delete model and labels_to_class_names to check if we correctly saved the model by loading it from disk and re-evaluating on test data.
+del model
+del classes
+del labels_to_class_names
+```
+
+
+```python
+import pickle as pkl
+from keras.models import load_model
+```
+
+
+```python
+model = load_model(MODEL_SAVE_PATH)
+
+with open(CLASSES_PKL_PATH, 'rb') as f:
+    classes = pkl.load(f)
+    labels_to_class_names = pkl.load(f)
+```
+
+
+```python
+print("Evaluate")
+result = model.evaluate(test_dataset)
+result = dict(zip(model.metrics_names, result))
+print(result)
+```
+
+>    Evaluate
+>    19/94 [=====>........................] - ETA: 0s - loss: 0.0088 - accuracy: 0.9984
+>
+>    2022-02-23 23:35:04.809043: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:112] Plugin optimizer for device_type GPU is enabled.
+>
+>    94/94 [==============================] - 1s 6ms/step - loss: 0.0242 - accuracy: 0.9953
+>    {'loss': 0.024181803688406944, 'accuracy': 0.9953333139419556}
+
+
+## References and Further Reading
+1. Dataset: https://archive.ics.uci.edu/ml/machine-learning-databases/00389/DevanagariHandwrittenCharacterDataset.zip
+2. Tensorflow Rescaling documentation https://www.tensorflow.org/api_docs/python/tf/keras/layers/Rescaling
+3. Tensorflow Dataset documentation https://www.tensorflow.org/api_docs/python/tf/data/Dataset
+4. Convolutional Neural Networks: https://machinelearningmastery.com/convolutional-layers-for-deep-learning-neural-networks/
+5. Categorical CrossEntropy loss function https://en.wikipedia.org/wiki/Cross_entropy#Cross-entropy_loss_function_and_logistic_regression
+6. Dua, D. and Graff, C. (2019). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.

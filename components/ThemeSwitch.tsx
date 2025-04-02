@@ -59,7 +59,8 @@ const ThemeSwitch = () => {
         fill="currentColor"
         className="h-5 w-5"
       >
-        {mounted && (theme === 'dark' || resolvedTheme === 'dark') ? Sun() : Moon()}
+        {/* {mounted && (theme === 'dark' || resolvedTheme === 'dark') ? Sun() : Moon()} */}
+        {mounted && (theme === 'light' || resolvedTheme === 'light') ? Moon() : Sun()}
       </svg>
     </button>
   )

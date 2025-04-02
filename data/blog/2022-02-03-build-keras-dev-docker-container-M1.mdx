@@ -1,0 +1,157 @@
+---
+draft: false
+type: Blog
+layout: PostLayout
+slug: "build-keras-dev-docker-container-m1"
+title: "Building Keras-Dev Docker Container on arm64/aarch64 systems like M1 Macbooks"
+authors: ['default']
+date: "2022-02-03"
+lastmod: "2022-02-03"
+summary: "I faced several problems trying to get my keras-dev docker container up and running in order to contribute to keras open-source project. I would like to prevent others from ending up wasting their time trying to solve this, so that they can dive right into the interesting stuff -- contributing to keras."
+# description: "A blog post on the challenges I faced in setting up a Keras development environment for open-source contributions."
+# keywords:
+#     - keras
+#     - docker
+#     - build
+#     - install
+#     - issues
+tags:
+    - keras
+    - docker
+    - open-source
+    - contribute
+    - build
+    - computer science
+---
+
+## Overview
+
+I faced several problems yesterday (2nd February, 2022) trying to get my keras-dev container up and running in order to contribute to keras open-source project. I would like to prevent others from ending up wasting their time trying to solve this, so that they can dive right into the interesting stuff -- contributing to keras.
+
+## Problems I faced
+The biggest issue is that `Bazel` couldn't be installed within an `aarch64` docker container.
+
+Another issue was that `tf-nightly` couldn't be installed.
+
+## Keras Dockerfile
+The Dockerfile keras provides you has a Bazel section which looks something like this:
+```dockerfile
+# Install Bazel
+RUN apt update
+RUN apt install curl gnupg -y
+RUN curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
+RUN mv bazel.gpg /etc/apt/trusted.gpg.d/
+RUN echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
+RUN apt update && apt install bazel -y
+```
+
+While this works with `amd64` (x86_64) systems, it doesn't work with `arm64` systems as the bazel package repository at <https://storage.googleapis.com/bazel-apt> doesn't have any pre-built binaries for `arm64/aarch64` systems like the M1 macbooks.
+
+Due to this, we get an error like:
+```bash
+ => ERROR [9/9] RUN apt install bazel -y                                        0.5s
+------
+ > [9/9] RUN apt install bazel -y:
+ #12 0.123
+ #12 0.123 WARNING: apt does not have a stable CLI interface. Use with 
+ # caution in scripts.
+ #12 0.123
+ #12 0.128 Reading package lists...
+ #12 0.381 Building dependency tree...
+ #12 0.448 Reading state information...
+ #12 0.493 E: Unable to locate package bazel
+------
+executor failed running [/bin/sh -c apt install bazel -y]: exit code: 100
+```
+
+While looking for the solution, I stumbled upon this issue <https://github.com/bazelbuild/bazel/issues/13925> which gave me hints as to what I should do.
+
+Github user [@keith](https://github.com/keith) mentioned an important point in the thread -- that bazel version 4.2.x is probably the first version to support M1 macs.
+
+And Github user [@philwo](https://github.com/philwo) recommended to download the arm64 linux binaries and modify their permissions to allow execution.
+
+Using these tips, I set about trying to make it work. 
+However, I was still stuck and unable to get the bazel command to work.
+
+So I have decided to share the final solution and explain each step in case a beginner wants to contribute to keras on an `arm64/aarch` system like M1 Macbooks.
+
+The Dockerfile which solves all issues:
+```dockerfile
+FROM python:3.9
+
+# https://code.visualstudio.com/docs/remote/containers-advanced#_creating-a-nonroot-user
+ARG USERNAME=keras-vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    #
+    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+    && apt-get update \
+    && apt-get install -y sudo bash \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# Nano (to make my life easier)
+RUN sudo apt install nano -y
+
+# Install Bazel arm64
+RUN sudo apt update
+RUN wget https://github.com/bazelbuild/bazel/releases/download/4.2.1/bazel-4.2.1-linux-arm64
+RUN sudo mkdir /usr/local/bin/bazel
+RUN sudo mv  bazel-4.2.1-linux-arm64 /usr/local/bin/bazel
+RUN sudo chmod +x /usr/local/bin/bazel/bazel-4.2.1-linux-arm64
+RUN export PATH="$PATH:/usr/local/bin/bazel"
+RUN echo 'export PATH="$PATH:/usr/local/bin/bazel"' >> ~/.bashrc
+RUN sudo ln -s /usr/local/bin/bazel/bazel-4.2.1-linux-arm64 /usr/bin/bazel
+RUN sudo bazel
+
+USER $USERNAME
+ENV PATH="/home/$USERNAME/.local/bin:${PATH}"
+```
+
+The `wget` line downloads the 4.2.1 version of Bazel built for arm64 systems to the present working directory (PWD).
+
+We create the destination folder in the following line and move the downloaded Bazel binary to it.
+
+We then allow the file to be executed by using the `chmod +x` command.
+
+After that, we add the path to our PATH environment variable so that the OS can recognize when we type a command (`bazel`).
+
+`RUN sudo ln -s /usr/local/bin/bazel/bazel-4.2.1-linux-arm64 /usr/bin/bazel`
+
+In this line, we create a symlink to the binary file from `/usr/bin/bazel`. This tells the OS that whenever we type `bazel` in the command line, we want it to execute the file `bazel-4.2.1-linux-arm64`.
+
+Finally, `sudo bazel` extracts the binary.
+
+Now, the docker container will be built successfully and you will have bazel ready to use.
+
+I have added the above as a Gist here: <https://gist.github.com/shenoy-anurag/e501fbef1ba551b04404a3e173533aa8>
+
+## Python Requirements
+The next step according to the [Keras contributing guidelines](https://github.com/keras-team/keras/blob/7857fa00431634ce59585e087d2d694b81669548/CONTRIBUTING.md) is to install the python requirements.
+
+You will get another error for tf-nightly. This is because tf-nightly doesn't have any `aarch64` wheels.
+
+Instead, install `tensorflow-aarch64` which has wheels built for aarch64, but the latest version as of today is 2.7.0. However, you'll have to make do, unless you build tensorflow from scratch from the latest git repo code.
+
+Mike Chan has a good article on that on medium: <https://medium.com/@m7807031/how-to-install-tensorflow-in-different-os-languane-framework-66b3beaa1b3d>
+
+We'll go with [`tensorflow-aarch64`](<https://github.com/KumaTea/tensorflow-aarch64>)
+
+Install using:
+```
+pip install tensorflow-aarch64
+```
+
+or better yet, replace the line `tf-nightly` in `requirements.txt` with `tensorflow-aarch64`.
+
+and continue with the steps on Keras's contributing guidelines page.
+
+## References
+1. Bazel issue on Github <https://github.com/bazelbuild/bazel/issues/13925>
+2. <https://medium.com/@m7807031/how-to-install-tensorflow-in-different-os-languane-framework-66b3beaa1b3d>
+3. Symbolic Links <https://www.freecodecamp.org/news/symlink-tutorial-in-linux-how-to-create-and-remove-a-symbolic-link/>
+4. Install Bazel Ubuntu (x86/amd64) <https://docs.bazel.build/versions/main/install-ubuntu.html>

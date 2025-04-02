@@ -1,0 +1,164 @@
+---
+draft: false
+type: Blog
+layout: PostLayout
+slug: "relative-imports"
+title: "Relative Imports & Python Packages"
+authors: ['default']
+date: "2023-05-10"
+lastmod: "2023-05-10"
+summary: "How to create packages and import modules correctly."
+# description: "Blog post on issues faced when importing python packages / modules and how to create packages."
+# keywords:
+#     - python
+#     - package
+#     - library
+tags:
+    - python
+    - computer science
+---
+
+## Backstory
+
+I have been a [PyCharm](https://www.jetbrains.com/pycharm/) user for the longest time ever since my team lead introduced it to me at my first job as a software engineer. I feel PyCharm made my life a lot easier and helped to focus on what actually mattered and deliver. However, it also hid some concepts of Python from me as a result of the magic happening behind the scenes to make my life easier.
+
+One of these is how you can run any file individually, without issues, and without worrying about imports.
+
+Let's say you have the following folder structure:
+```
+myproject
+├── datastructures
+│   └── linked_list.py
+|   └── stack.py
+|   └── heap.py
+└── algorithms
+|   └── binary_search.py
+|   └── union_find.py
+└── run
+    └── main.py
+```
+
+And imagine the content of main.py is
+```python
+from datastructures.stack import Stack
+
+stack = Stack()
+stack.push(5)
+stack.push(10)
+stack.pop()
+stack.pop()
+stack.pop()
+```
+
+To run `main.py`, in PyCharm, you simply right click anywhere and click on `Run`, or press the play icon.
+
+In a simple code editor like VS Code or when you are at the terminal however, running `main.py` will result in an error.
+
+```error
+Traceback (most recent call last):
+  File "/Users/username/Projects/myproject/run/main.py", line 1, in <module>
+    from datastructures.stack import Stack
+ModuleNotFoundError: No module named 'datastructures'
+```
+
+## Why PyCharm doesn't have this problem
+PyCharm automatically appends the project root to `sys.path` so the application package is visible.
+
+Compare the way the same `main.py` runs between PyCharm and VS Code. 
+
+Add the following lines of code to the top of `main.py`:
+```python
+import sys
+print('\n'.join(sys.path))
+```
+
+When you run this code in PyCharm, you will see both the parent folder of `main.py` and the sources root folder (i.e. the project root folder, or *myproject* in the above example). This allows python to add all subfolder of `myproject` as packages and allows one to import using the relative import syntax `from datastructures.stack import Stack`.
+
+However, in VS Code, you will only see the parent folder of `main.py`. This is why it is unable to see/load the *datastructures* package.
+
+## The sub-optimal way to solve this
+Adding a `sys.path.append` line which adds the specified directory to the python path.
+
+You could add these two lines to `main.py`:
+```python
+import sys
+sys.path.append('../')
+```
+
+and when you run `main.py` from within the `run` folder, the import will work correctly.
+
+```terminal
+(.venv) user@computer-name run % python main.py
+```
+
+### Why this is problematic
+If you append an absolute path to `sys.path`, then when your project is copied to another computer, it won't work.
+
+However, given that we are using the relative path `'../'`, this should not be a problem right?? **WRONG**
+
+If you run `main.py` from outside the `run` folder, the import will **FAIL**.
+
+If you want to run it from `myproject` folder, you will need to change the line 
+```python
+sys.path.append('../')
+```
+to
+```python
+sys.path.append('.')
+```
+and it will magically work.
+
+As we can see, our co-worker or another individual wanting to make use of our work, might end up seeing errors and be completely unable to understand why the same command works for us, but not for them.
+
+## The right way
+Enter packages!
+
+Creating a package out of your code is the right way to solve all these import issues and make your code easier to understand and import.
+
+Simply turn your folder structure and set of modules into a package.
+
+Start by adding empty `__init__.py` files to each directory within your project directory.
+
+Add a `setup.py` file in your project root directory (*myproject* in the example above).
+
+```python
+from setuptools import find_packages, setup
+
+setup(
+    name='myproject',
+    packages=find_packages(),
+    version='0.1.0',
+    description='Data Structures and Algorithms in Python',
+    author='Anurag',
+    license='MIT',
+)
+```
+
+Now all you have to do is to change to the directory containing `setup.py` on your terminal and run:
+```terminal
+pip install -e .
+```
+
+Voila!
+
+You have succesfully installed your project as a package.
+
+The `-e` flag ensures any changes you make to the code is reflected in the package as soon as the file is saved. This is for development mode, or editable mode, or *e* for short. Read more here: https://setuptools.pypa.io/en/latest/userguide/development_mode.html
+
+Now, you can import any module within your project using the following structure:
+```python
+from package_name.directory.subdirectory.module import MyClass
+```
+
+In our example, we can import the stack class using the following import:
+```python
+from myproject.datastructures.stack import Stack
+```
+
+If you want to deep-dive into how imports work in Python, read more about relative imports here: https://stackoverflow.com/a/14132912/10052646
+
+## References and Further Reading
+1. StackOverflow: Relative imports for the billionth time https://stackoverflow.com/questions/14132789/relative-imports-for-the-billionth-time
+2. StackOverflow: Importing files from another folder https://stackoverflow.com/questions/4383571/importing-files-from-different-folder
+3. StackOverflow: Automtically add to sys.path like PyCharm https://stackoverflow.com/questions/75990606/automatically-add-project-to-sys-path-in-vs-code-like-pycharm-spyder-do
+4. Packaging Python Projects https://packaging.python.org/en/latest/tutorials/packaging-projects/

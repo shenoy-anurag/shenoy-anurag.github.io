@@ -1,0 +1,84 @@
+---
+draft: false
+type: Blog
+layout: PostLayout
+slug: "encoding-categorical-features"
+title: "Encoding Categorical features for Machine Learning"
+authors: ['default']
+date: "2022-02-02"
+lastmod: "2022-02-02"
+summary: "There are two common ways to encode categorical features. We can use Ordinal Encoding or we can use One Hot Encoding. Let's explore when you should use Ordinal encoding and when to use One hot encoding in this post."
+# description: "A blog post covering the different ways of handling categorical features."
+# keywords:
+#     - machine learning
+#     - encoding
+#     - python
+#     - data processing
+#     - data
+#     - data science
+tags:
+    - machine learning
+    - encoding
+    - python
+    - data processing
+    - data science
+    - computer science
+---
+
+## Introduction
+
+Features can be continuous like temperature or weight or categorical like "Male" or "Female". The categorical variables are also called Nominal. A nominal category or group is one in which the objects or ideas share characteristics and hence are given a name -- they are nominal.
+
+There are two common ways to encode categorical features. We can use Ordinal Encoding or we can use One Hot Encoding.
+
+## Ordinal Encoding [1]
+
+Ordinal encoding involves giving unique integers to each category.
+
+If we have say "Male" or "Female", we could assign the category "Male" a `0`, and assign "Female" a `1`.
+
+However, ordering in this case doesn't make any sense.
+
+Let's say we have a model which has the following labels: "Best", "Good", "Average", "Bad", "Worst". In this example, Ordinal encoding could be useful as we could have integers going from `0` to `4` from "Worst" to "Best" or the other way around.
+
+The ordering information could be used by machine learning algorithms in this case to better understand the relationship between these categories.
+
+## One Hot Encoding
+
+One Hot Encoding on the other hand assigns a `1` to a category if it's the correct category for that datapoint or a `0` if not.
+
+Let's say we have the following categories/classes: "Laptop", "Desktop", "Smartphone", "Tablet", "Smartwatch".
+
+If we apply One Hot Encoding, if the class is "Tablet", we'd end up with the following array:
+```python
+[0, 0, 0, 1, 0]
+```
+
+We can see that the 4th position corresponding to "Tablet" is given the value `1`, while the rest are `0`s.
+
+The way I remember this is by remembering the Hot-Cold game.
+
+In the Hot-Cold game, one person, say A, thinks of a number, say 10, and the other (person B) tries to guess the number.
+If B guesses a number like 200, A will say "Cold".
+If B guesses a number closer to 10, like say 12, A might say "Warm" and as B gets closer and closer, A says warmer and warmer until B guesses correctly which is when A has to say "Hot" indicating to B that he guessed correctly.
+
+One Hot Encoding works in the same way, except we are telling the machine learning algorithm whether their guess (read prediction) is Hot or Not.
+
+One of the biggest benefits of One Hot Encoding is giving every class an equal opportunity to make an impact.
+
+This also comes under the topic of Normalisation/Standardisation which is a technique used for input data to allow each feature to have an equal impact on the parameters of the model.
+
+## Conclusion
+If you have categorical data, it is a good idea to encode it to improve model performance and accuracy.
+
+If the categories are ordered, go with Ordinal Encoding.
+
+If the categories are unordered, go with One Hot Encoding.
+
+## References & Further Reading
+1. Encodings in Sklearn <https://scikit-learn.org/stable/modules/preprocessing.html#encoding-categorical-features>
+2. Categorical Variables <https://en.wikipedia.org/wiki/Categorical_variable>
+3. One-hot <https://en.wikipedia.org/wiki/One-hot>
+4. Normalisation by Zixuan Zhang <https://towardsdatascience.com/understand-data-normalization-in-machine-learning-8ff3062101f0>
+
+[1]: <https://scikit-learn.org/stable/modules/preprocessing.html#encoding-categorical-features>
