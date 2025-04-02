@@ -28,7 +28,7 @@ const showcaseItems: ShowcaseItem[] = [
       'Provides definitions, pronunciations, and contextual examples.',
       'Aims to simplify language learning for non-native Hindi speakers.',
     ],
-    imgSrc: '/static/images/hindict/namaste-light.png',
+    imgSrc: '/static/images/hindict/namaste-light.webp',
     imgAlt:
       'Demonstration screenshot of HinDict the Hindi to English dictionary project using the word Namaste as input',
     demoURL: { url: 'https://hindict.anuragshenoy.com/', text: 'HinDict' },
@@ -76,7 +76,7 @@ const showcaseItems: ShowcaseItem[] = [
       'Provides search and filtering with Elasticsearch for near-instant results.',
       'Automates data collection and indexing via Docker + Celery for reliability.',
     ],
-    imgSrc: '/static/images/aggre-gator/aggre-gator-frontend.png',
+    imgSrc: '/static/images/aggre-gator/aggre-gator-frontend.webp',
     imgAlt:
       'Screenshot of Aggre-Gator landing page, with news articles aggregated from CNN and Fox.',
     githubURL: { url: 'https://github.com/shenoy-anurag/Aggre-Gator', text: 'Aggre-Gator GitHub' },
