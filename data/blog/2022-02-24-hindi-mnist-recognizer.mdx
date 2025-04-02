@@ -238,21 +238,23 @@ test_dataset = image_dataset_from_directory(
 )
 ```
 
->    Gathering training dataset...
->    Found 17000 files belonging to 10 classes.
->    Using 15300 files for training.
->    Metal device set to: Apple M1
->    Gathering validation dataset...
->
->
->    2022-02-23 23:32:59.540309: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
->    2022-02-23 23:32:59.540429: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
->
->
->    Found 17000 files belonging to 10 classes.
->    Using 1700 files for validation.
->    Gathering test dataset...
->    Found 3000 files belonging to 10 classes.
+```log
+    Gathering training dataset...
+    Found 17000 files belonging to 10 classes.
+    Using 15300 files for training.
+    Metal device set to: Apple M1
+    Gathering validation dataset...
+
+
+    2022-02-23 23:32:59.540309: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305 Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+    2022-02-23 23:32:59.540429: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271 Created TensorFlow device \(/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory\) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+
+
+    Found 17000 files belonging to 10 classes.
+    Using 1700 files for validation.
+    Gathering test dataset...
+    Found 3000 files belonging to 10 classes.
+```
 
 The tensorflow Dataset object automatically performs ordinal encoding on the labels and so, we are creating our own ordinal encoding and storing it in the variable `labels_to_class_names`.
 
@@ -262,7 +264,7 @@ labels_to_class_names = dict([(v, k) for k, v in class_names_to_labels.items()])
 print(labels_to_class_names)
 ```
 
->    {0: 'digit_0', 1: 'digit_1', 2: 'digit_2', 3: 'digit_3', 4: 'digit_4', 5: 'digit_5', 6: 'digit_6', 7: 'digit_7', 8: 'digit_8', 9: ?'digit_9'}
+\{0: 'digit_0', 1: 'digit_1', 2: 'digit_2', 3: 'digit_3', 4: 'digit_4', 5: 'digit_5', 6: 'digit_6', 7: 'digit_7', 8: 'digit_8', 9: 'digit_9'\}
 
 
 ### Look at the data
@@ -323,6 +325,7 @@ with tf.device('/CPU:0'):
 
 ### Prefetch and Caching
 Learn about tf.data.Dataset Prefetching here: https://www.tensorflow.org/api_docs/python/tf/data/Dataset#prefetch
+
 Learn about tf.data.Dataset Caching here: https://www.tensorflow.org/api_docs/python/tf/data/Dataset#cache
 
 
@@ -385,6 +388,7 @@ model = keras.Sequential(
 
 ### Compiling and Building Model
 Note that we are using Categorical Crossentropy as the loss function, and this is well suited for categorical output data.
+
 Read more here: https://en.wikipedia.org/wiki/Cross_entropy#Cross-entropy_loss_function_and_logistic_regression
 
 
@@ -396,6 +400,7 @@ model.build(input_shape=(BATCH_SIZE, IMG_HEIGHT, IMG_WIDTH, 1))
 model.summary()
 ```
 
+```log
     Model: "sequential_1"
     _________________________________________________________________
      Layer (type)                Output Shape              Param #   
@@ -427,7 +432,7 @@ model.summary()
     Trainable params: 315,146
     Non-trainable params: 0
     _________________________________________________________________
-
+```
 
 
 ```python
@@ -441,42 +446,53 @@ history = model.fit(
 
 >    Epoch 1/15
 
-
 >    2022-02-23 23:33:01.336773: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:112] Plugin optimizer for device_type GPU is enabled.
-
 
 >    479/479 [==============================] - ETA: 0s - loss: 0.3290 - accuracy: 0.8952
 
 >    2022-02-23 23:33:09.665198: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:112] Plugin optimizer for device_type GPU is enabled.
 
-
 >    479/479 [==============================] - 9s 18ms/step - loss: 0.3290 - accuracy: 0.8952 - val_loss: 0.0485 - val_accuracy: 0.9865
+
 >    Epoch 2/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0899 - accuracy: 0.9727 - val_loss: 0.0420 - val_accuracy: 0.9871
+
 >    Epoch 3/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0578 - accuracy: 0.9808 - val_loss: 0.0216 - val_accuracy: 0.9924
+
 >    Epoch 4/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0450 - accuracy: 0.9856 - val_loss: 0.0171 - val_accuracy: 0.9935
+
 >    Epoch 5/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0373 - accuracy: 0.9882 - val_loss: 0.0191 - val_accuracy: 0.9918
+
 >    Epoch 6/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0345 - accuracy: 0.9892 - val_loss: 0.0086 - val_accuracy: 0.9976
+
 >    Epoch 7/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0284 - accuracy: 0.9908 - val_loss: 0.0097 - val_accuracy: 0.9965
+
 >    Epoch 8/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0212 - accuracy: 0.9941 - val_loss: 0.0110 - val_accuracy: 0.9959
+
 >    Epoch 9/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0246 - accuracy: 0.9919 - val_loss: 0.0142 - val_accuracy: 0.9953
+
 >    Epoch 10/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0195 - accuracy: 0.9934 - val_loss: 0.0104 - val_accuracy: 0.9953
+
 >    Epoch 11/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0173 - accuracy: 0.9945 - val_loss: 0.0126 - val_accuracy: 0.9965
+
 >    Epoch 12/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0177 - accuracy: 0.9944 - val_loss: 0.0097 - val_accuracy: 0.9971
+
 >    Epoch 13/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0152 - accuracy: 0.9947 - val_loss: 0.0081 - val_accuracy: 0.9971
+
 >    Epoch 14/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0152 - accuracy: 0.9952 - val_loss: 0.0321 - val_accuracy: 0.9912
+
 >    Epoch 15/15
 >    479/479 [==============================] - 8s 17ms/step - loss: 0.0144 - accuracy: 0.9953 - val_loss: 0.0176 - val_accuracy: 0.9941
 
@@ -604,7 +620,7 @@ print(result)
 >    2022-02-23 23:35:04.809043: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:112] Plugin optimizer for device_type GPU is enabled.
 >
 >    94/94 [==============================] - 1s 6ms/step - loss: 0.0242 - accuracy: 0.9953
->    {'loss': 0.024181803688406944, 'accuracy': 0.9953333139419556}
+>    \{'loss': 0.024181803688406944, 'accuracy': 0.9953333139419556\}
 
 
 ## References and Further Reading

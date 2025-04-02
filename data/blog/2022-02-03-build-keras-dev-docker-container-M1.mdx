@@ -19,7 +19,6 @@ tags:
     - keras
     - docker
     - open-source
-    - contribute
     - build
     - computer science
 ---
@@ -45,7 +44,7 @@ RUN echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.
 RUN apt update && apt install bazel -y
 ```
 
-While this works with `amd64` (x86_64) systems, it doesn't work with `arm64` systems as the bazel package repository at <https://storage.googleapis.com/bazel-apt> doesn't have any pre-built binaries for `arm64/aarch64` systems like the M1 macbooks.
+While this works with `amd64` (x86_64) systems, it doesn't work with `arm64` systems as the bazel package repository at https://storage.googleapis.com/bazel-apt doesn't have any pre-built binaries for `arm64/aarch64` systems like the M1 macbooks.
 
 Due to this, we get an error like:
 ```bash
@@ -64,7 +63,7 @@ Due to this, we get an error like:
 executor failed running [/bin/sh -c apt install bazel -y]: exit code: 100
 ```
 
-While looking for the solution, I stumbled upon this issue <https://github.com/bazelbuild/bazel/issues/13925> which gave me hints as to what I should do.
+While looking for the solution, I stumbled upon this issue https://github.com/bazelbuild/bazel/issues/13925 which gave me hints as to what I should do.
 
 Github user [@keith](https://github.com/keith) mentioned an important point in the thread -- that bazel version 4.2.x is probably the first version to support M1 macs.
 
@@ -128,7 +127,7 @@ Finally, `sudo bazel` extracts the binary.
 
 Now, the docker container will be built successfully and you will have bazel ready to use.
 
-I have added the above as a Gist here: <https://gist.github.com/shenoy-anurag/e501fbef1ba551b04404a3e173533aa8>
+I have added the above as a Gist here: https://gist.github.com/shenoy-anurag/e501fbef1ba551b04404a3e173533aa8
 
 ## Python Requirements
 The next step according to the [Keras contributing guidelines](https://github.com/keras-team/keras/blob/7857fa00431634ce59585e087d2d694b81669548/CONTRIBUTING.md) is to install the python requirements.
@@ -137,7 +136,7 @@ You will get another error for tf-nightly. This is because tf-nightly doesn't ha
 
 Instead, install `tensorflow-aarch64` which has wheels built for aarch64, but the latest version as of today is 2.7.0. However, you'll have to make do, unless you build tensorflow from scratch from the latest git repo code.
 
-Mike Chan has a good article on that on medium: <https://medium.com/@m7807031/how-to-install-tensorflow-in-different-os-languane-framework-66b3beaa1b3d>
+Mike Chan has a good article on that on medium: https://medium.com/@m7807031/how-to-install-tensorflow-in-different-os-languane-framework-66b3beaa1b3d
 
 We'll go with [`tensorflow-aarch64`](<https://github.com/KumaTea/tensorflow-aarch64>)
 
@@ -151,7 +150,7 @@ or better yet, replace the line `tf-nightly` in `requirements.txt` with `tensorf
 and continue with the steps on Keras's contributing guidelines page.
 
 ## References
-1. Bazel issue on Github <https://github.com/bazelbuild/bazel/issues/13925>
-2. <https://medium.com/@m7807031/how-to-install-tensorflow-in-different-os-languane-framework-66b3beaa1b3d>
-3. Symbolic Links <https://www.freecodecamp.org/news/symlink-tutorial-in-linux-how-to-create-and-remove-a-symbolic-link/>
-4. Install Bazel Ubuntu (x86/amd64) <https://docs.bazel.build/versions/main/install-ubuntu.html>
+1. Bazel issue on Github https://github.com/bazelbuild/bazel/issues/13925
+2. https://medium.com/@m7807031/how-to-install-tensorflow-in-different-os-languane-framework-66b3beaa1b3d
+3. Symbolic Links https://www.freecodecamp.org/news/symlink-tutorial-in-linux-how-to-create-and-remove-a-symbolic-link/
+4. Install Bazel Ubuntu (x86/amd64) https://docs.bazel.build/versions/main/install-ubuntu.html

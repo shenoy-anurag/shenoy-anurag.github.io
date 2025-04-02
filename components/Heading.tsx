@@ -5,7 +5,7 @@ import portfolioData from '@/data/portfolioData'
 export default function Heading() {
   return (
     <>
-      <div className="mt-10 flex flex-col gap-10 md:mt-12 lg:mt-14 lg:gap-10">
+      <div className="mt-10 flex flex-col gap-10 text-white md:mt-12 lg:mt-14 lg:gap-10">
         <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl">
           {portfolioData.headline}
         </h1>
@@ -14,7 +14,7 @@ export default function Heading() {
         </h3>
         <Separator className="mt-4" />
       </div>
-      <div className="pt-8 pb-18">
+      <div className="pt-8 pb-18 text-white">
         <h6 className="text-lg md:text-lg">{portfolioData.lookBelow}</h6>
       </div>
     </>

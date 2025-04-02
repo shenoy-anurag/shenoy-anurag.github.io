@@ -5,7 +5,7 @@ import LetsConnect from './LetsConnect'
 
 export default function Footer() {
   return (
-    <footer className="">
+    <footer>
       <LetsConnect />
       <div className="mt-16 mb-8 flex flex-col items-center gap-4">
         <div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
@@ -20,16 +20,16 @@ export default function Footer() {
             <li>{`Powered by`}</li>
             <li>{` • `}</li>
             <li>
-              <IconsBundle kind="nextjs" href={'https://nextjs.org/'} size={4} />
+              <IconsBundle kind="nextjs" href={'https://nextjs.org/'} size={5} />
             </li>
             <li>
-              <IconsBundle kind="typescript" href={'https://www.typescriptlang.org/'} size={4} />
+              <IconsBundle kind="typescript" href={'https://www.typescriptlang.org/'} size={5} />
             </li>
             <li>
-              <IconsBundle kind="tailwind" href={`https://tailwindcss.com/`} size={4} />
+              <IconsBundle kind="tailwind" href={`https://tailwindcss.com/`} size={5} />
             </li>
             <li>
-              <IconsBundle kind="umami" href={`https://umami.is/`} size={4} />
+              <IconsBundle kind="umami" href={`https://umami.is/`} size={5} />
             </li>
           </ul>
         </div>

@@ -51,13 +51,11 @@ The four algorithms we'll be using are:
 
 The equation for Naive Bayes classification rule is,
 
-```tex
 $$
 P(y \mid x_1, \dots, x_n) \propto P(y) \prod_{i=1}^{n} P(x_i \mid y)
 \Downarrow
 \hat{y} = \arg\max_y P(y) \prod_{i=1}^{n} P(x_i \mid y)
 $$
-```
 
 The probability $P(x_i|y)$ represents the probability of feature $i$ in training data $x$ given that we know the document belongs to a class $y$.
 
@@ -152,7 +150,7 @@ These two topics involve a lot more math and I feel they deserve a separate post
 If you want to skip to the code, LDA is [here](#lda-with-tf-idf) and Least Squares is covered [here](#least-squares).
 
 ## Dataset
-The data we'll be using is the Newsgroup dataset which can be found here: <http://qwone.com/~jason/20Newsgroups/>
+The data we'll be using is the Newsgroup dataset which can be found here: http://qwone.com/~jason/20Newsgroups/
 
 We'll be using the Matlab/Octave processed version of the data.
 
@@ -596,6 +594,6 @@ The Jupyter notebook is available here: https://github.com/shenoy-anurag/machine
 6. Least Squares https://en.wikipedia.org/wiki/Least_squares
 7. TF-IDF https://towardsdatascience.com/tf-idf-for-document-ranking-from-scratch-in-python-on-real-world-dataset-796d339a4089
 
-[1]: https://scikit-learn.org/stable/modules/naive_bayes.html#naive-bayes
-[2]: https://scikit-learn.org/stable/modules/naive_bayes.html#bernoulli-naive-bayes
-[3]: https://scikit-learn.org/stable/modules/naive_bayes.html#multinomial-naive-bayes
+[^1]: https://scikit-learn.org/stable/modules/naive_bayes.html#naive-bayes
+[^2]: https://scikit-learn.org/stable/modules/naive_bayes.html#bernoulli-naive-bayes
+[^3]: https://scikit-learn.org/stable/modules/naive_bayes.html#multinomial-naive-bayes
