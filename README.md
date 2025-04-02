@@ -1,3 +1,16 @@
+# Overview
+
+My Portfolio Website. Responsive and stylish like Squarespace templates.
+
+## SEO
+Great Lighthouse score
+
+https://www.webpagetest.org/result/250402_BiDcNY_A9N/
+
+Great PageSpeed Insights score
+
+https://pagespeed.web.dev/analysis/https-www-anuragshenoy-in/g2ct6mwowf?form_factor=mobile
+
 ## Installation
 
 ```bash
