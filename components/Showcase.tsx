@@ -104,67 +104,53 @@ const showcaseItems: ShowcaseItem[] = [
 export default function Showcase() {
   return (
     <>
-      <div className="flex flex-col divide-y divide-white">
+      <div className="flex flex-col divide-y divide-gray-300 dark:divide-white">
         {showcaseItems.map((d, index) => (
           <div
             key={index}
-            // className="grid-flow-auto grid-row-2 grid gap-12 py-8 lg:grid-flow-row lg:grid-cols-2 lg:py-24"
-            className="grid-flow-auto grid-row-2 grid gap-4 py-8 lg:grid-flow-row lg:grid-cols-2 lg:gap-0 lg:py-24"
+            className="grid-flow-auto grid-row-2 grid gap-4 py-8 lg:grid-flow-row lg:grid-cols-2 lg:gap-2 lg:py-24"
           >
-            <div className="order-2 flex flex-col gap-6 lg:order-1 lg:items-start lg:gap-8 lg:pr-28">
+            <div className="order-2 flex flex-col gap-6 lg:order-1 lg:items-start lg:gap-6">
               <h4 className="text-primary-500 text-lg">Project {d.id}</h4>
-              <h2 className="text-2xl font-bold md:text-2xl lg:text-3xl">{d.title}</h2>
-              <p className="text-lg/8">{d.description}</p>
-              <p className="text-lg/8">
-                <span className="font-bold">Tech Stack:</span>
-                <span> </span>
-                <span className="italic">{d.techStack}</span>
-              </p>
-              {d.deployment && (
-                <p className="text-lg">
-                  <span className="font-bold">Deployment:</span>
+              <h2 className="text-2xl font-bold md:text-2xl lg:pr-8 lg:text-3xl">{d.title}</h2>
+              <div className="flex flex-col gap-6 lg:gap-6 lg:pr-28">
+                <p className="text-lg/8">{d.description}</p>
+                <p className="text-lg/8">
+                  <span className="font-bold">Tech Stack:</span>
                   <span> </span>
-                  <span className="italic">{d.deployment}</span>
+                  <span className="italic">{d.techStack}</span>
                 </p>
-              )}
-              {d.keyFeatures && (
-                <div className="flex flex-col gap-2 text-lg text-black lg:gap-4 lg:text-lg dark:text-white">
-                  <span className="font-bold">Key Features:</span>
-                  <ul className="list-outside list-disc pl-8 lg:pl-10">
-                    {d.keyFeatures.map((feature, i) => (
-                      <li key={i} className="my-3 pl-1">
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {d.demoURL && d.githubURL ? (
-                <div className="text-lg">
-                  <p className="flex gap-4">
-                    Links:{' '}
-                    <a
-                      href={d.demoURL.url}
-                      aria-label={`link to ${d.demoURL.text}`}
-                      className="underline"
-                    >
-                      {d.demoURL.text}
-                    </a>
-                    <span> | </span>
-                    <a
-                      href={d.githubURL.url}
-                      aria-label={`link to ${d.githubURL.text}`}
-                      className="underline"
-                    >
-                      {d.githubURL.text}
-                    </a>
+                {d.deployment && (
+                  <p className="text-lg">
+                    <span className="font-bold">Deployment:</span>
+                    <span> </span>
+                    <span className="italic">{d.deployment}</span>
                   </p>
-                </div>
-              ) : (
-                <div className="text-lg">
-                  {d.githubURL && (
+                )}
+                {d.keyFeatures && (
+                  <div className="flex flex-col gap-2 text-lg text-black lg:gap-4 lg:text-lg dark:text-white">
+                    <span className="font-bold">Key Features:</span>
+                    <ul className="list-outside list-disc pl-8 lg:pl-10">
+                      {d.keyFeatures.map((feature, i) => (
+                        <li key={i} className="my-3 pl-1">
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {d.demoURL && d.githubURL ? (
+                  <div className="text-lg">
                     <p className="flex gap-4">
                       Links:{' '}
+                      <a
+                        href={d.demoURL.url}
+                        aria-label={`link to ${d.demoURL.text}`}
+                        className="underline"
+                      >
+                        {d.demoURL.text}
+                      </a>
+                      <span> | </span>
                       <a
                         href={d.githubURL.url}
                         aria-label={`link to ${d.githubURL.text}`}
@@ -173,9 +159,24 @@ export default function Showcase() {
                         {d.githubURL.text}
                       </a>
                     </p>
-                  )}
-                </div>
-              )}
+                  </div>
+                ) : (
+                  <div className="text-lg">
+                    {d.githubURL && (
+                      <p className="flex gap-4">
+                        Links:{' '}
+                        <a
+                          href={d.githubURL.url}
+                          aria-label={`link to ${d.githubURL.text}`}
+                          className="underline"
+                        >
+                          {d.githubURL.text}
+                        </a>
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="order-1 place-content-center lg:order-2">
               <Image

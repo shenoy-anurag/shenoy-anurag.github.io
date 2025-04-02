@@ -1,7 +1,6 @@
 'use client'
 import { useState } from 'react'
-import siteMetadata from '@/data/siteMetadata'
-import NewsletterForm from 'pliny/ui/NewsletterForm'
+import { Separator } from '@radix-ui/react-separator'
 import GradientAnimation from '@/components/GradientAnimation'
 import Header from '@/components/Header'
 import MainSectionContainer from '@/components/MainSectionContainer'
@@ -11,8 +10,8 @@ import Showcase from '@/components/Showcase'
 
 export default function Home({ posts }) {
   const [animationProps, setAnimationProps] = useState({
-    colorA: [0.1, 0.8, 0.3], // Dark green
-    colorB: [0.2, 0.49, 0.5], // Light green
+    colorA: [0.1, 0.8, 0.3], // Green
+    colorB: [0.2, 0.49, 0.5], // Bluish green
     chaosLevel: 1.5,
     scale: 1.0,
   })
@@ -37,6 +36,10 @@ export default function Home({ posts }) {
               <NewsletterForm />
             </div>
           )} */}
+          <Separator
+            orientation="horizontal"
+            className="border-t border-gray-300 dark:border-white"
+          />
         </SectionContainer>
       </div>
     </>
