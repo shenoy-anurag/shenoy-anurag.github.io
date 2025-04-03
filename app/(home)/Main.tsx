@@ -11,7 +11,7 @@ import Showcase from '@/components/Showcase'
 export default function Home({ posts }) {
   const [animationProps, setAnimationProps] = useState({
     colorA: [0.1, 0.8, 0.3], // Green
-    colorB: [0.2, 0.49, 0.5], // Bluish green
+    colorB: [0.2, 0.48, 0.5], // Bluish green
     chaosLevel: 1.5,
     scale: 1.0,
   })
