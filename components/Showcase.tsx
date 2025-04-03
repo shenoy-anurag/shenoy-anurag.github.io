@@ -46,7 +46,7 @@ const showcaseItems: ShowcaseItem[] = [
       'Demonstrates how AI agents can interact to refine complex ideas.',
       'Serves as a unique learning tool where users can observe AI-driven debates on cutting-edge research.',
     ],
-    imgSrc: '/static/images/debate-ai/debate-ai.png',
+    imgSrc: '/static/images/debate-ai/debate-ai.webp',
     imgAlt:
       'Demonstration screenshot of Debate AI project, with two AI agents debating the topic "Should transformer model be used as the primary architecture for all NLP models?".',
     githubURL: { url: 'https://github.com/shenoy-anurag/DebateAI', text: 'Debate AI' },
@@ -61,7 +61,7 @@ const showcaseItems: ShowcaseItem[] = [
       'Uses color gradients to indicate how close each guessed letter is to its correct position.',
       'Offers a fresh alternative to standard Wordle-style puzzles.',
     ],
-    imgSrc: '/static/images/guessir/guessir-jester2.png',
+    imgSrc: '/static/images/guessir/guessir-jester2.webp',
     imgAlt:
       'Screenshot of Guessir, the word guessing game being played with the player successfully guessing the correct answer of "Jester"',
   },
