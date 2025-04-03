@@ -5,11 +5,11 @@ const siteMetadata = {
   headerTitle: 'Anurag Shenoy',
   description: 'My personal corner of the web, showcasing my projects, blog, and my portfolio.',
   language: 'en-us',
-  theme: 'system', // system, dark or light
-  siteUrl: 'https://www.anuragshenoy.in/',
-  siteRepo: 'https://github.com/shenoy-anurag/personal-website',
+  theme: 'dark', // system, dark or light
+  siteUrl: 'https://www.anuragshenoy.in',
+  siteRepo: 'https://github.com/shenoy-anurag/shenoy-anurag.github.io',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
-  socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
+  socialBanner: `${process.env.BASE_PATH || ''}/static/images/landing-page.webp`,
   mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'anuragshenoy21@gmail.com',
   github: 'https://github.com/shenoy-anurag',
