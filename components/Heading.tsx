@@ -2,7 +2,7 @@
 import { Separator } from '@/components/ui/separator'
 import portfolioData from '@/data/portfolioData'
 
-export default function Heading() {
+export default function Hero() {
   return (
     <>
       <div className="mt-10 flex flex-col gap-10 text-white md:mt-12 lg:mt-14 lg:gap-10">
