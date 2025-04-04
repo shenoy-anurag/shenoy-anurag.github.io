@@ -40,16 +40,10 @@ jobs:
           UNOPTIMIZED: 1
           BASE_PATH: ${{ steps.configurepages.outputs.base_path }}
           NEXT_UMAMI_ID: ${{ secrets.NEXT_UMAMI_ID }}
-          NEXT_RESUME_PDF: ${{ vars.NEXT_RESUME_PDF }}
+          NEXT_RESUME_PDF: ${{ secrets.NEXT_RESUME_PDF }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
-      - run: echo "NEXT_RESUME_PDF=${{ env.NEXT_RESUME_PDF}}"
-        env:
-          NEXT_RESUME_PDF: ${{ vars.NEXT_RESUME_PDF }}
-      - run: echo "NEXT_RESUME_PDF=${{ env.SECRET_RESUME_PDF}}"
-        env:
-          SECRET_RESUME_PDF: ${{ secrets.NEXT_RESUME_PDF }}
 
   # Deployment job
   deploy:
