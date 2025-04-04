@@ -42,5 +42,5 @@ const DARK_MONZA_RED = [179, 0, 30] // Hex = #B3001E
 // 2. It's generally better to use a darker color for Color A.
 
 // Selection
-export const COLOR_A = FIREFLY
-export const COLOR_B = ASTRONAUT
+export const COLOR_A = MALACHITE
+export const COLOR_B = PARADISO
