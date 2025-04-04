@@ -33,7 +33,7 @@ const portfolioData = {
   resume: {
     urlPdf:
       process.env.NEXT_RESUME_PDF ||
-      'https://drive.google.com/file/d/1VlPHVgvttEx-UtJzm7N_Lzt5GHOepcUZ/view?usp=sharing',
+      'https://drive.google.com/file/d/1tyt9CiPcUtOM0ZLhV5LFJ2DUN5g_tJ7N/view?usp=drive_link',
     urlDoc: process.env.NEXT_RESUME_DOC,
   },
 

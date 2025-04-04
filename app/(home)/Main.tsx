@@ -6,11 +6,14 @@ import Header from '@/components/Header'
 import MainSectionContainer from '@/components/MainSectionContainer'
 import Heading from '@/components/Heading'
 import Showcase from '@/components/Showcase'
+import { COLOR_A, COLOR_B } from './colors'
 
 export default function Home() {
+  const colorA = COLOR_A
+  const colorB = COLOR_B
   const [animationProps, setAnimationProps] = useState({
-    colorA: [0.1, 0.8, 0.3], // Green
-    colorB: [0.2, 0.48, 0.5], // Bluish green
+    colorA: [colorA[0] / 255, colorA[1] / 255, colorA[2] / 255], // Bright green
+    colorB: [colorB[0] / 255, colorB[1] / 255, colorB[2] / 255], // Paradise blue
     chaosLevel: 1.5,
     scale: 1.0,
   })
