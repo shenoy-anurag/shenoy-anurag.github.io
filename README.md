@@ -3,13 +3,13 @@
 My Portfolio Website. Responsive and stylish like Squarespace templates.
 
 ## SEO
-Great Lighthouse score
+Good Lighthouse score
 
 https://www.webpagetest.org/result/250402_BiDcNY_A9N/
 
-Great PageSpeed Insights score
+Decent PageSpeed Insights score (given that I have a gradient animation)
 
-https://pagespeed.web.dev/analysis/https-www-anuragshenoy-in/g2ct6mwowf?form_factor=mobile
+https://pagespeed.web.dev/analysis/https-www-anuragshenoy-in/0c0y484kx8?form_factor=mobile
 
 ## Installation
 

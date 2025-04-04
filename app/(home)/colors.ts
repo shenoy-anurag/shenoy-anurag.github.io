@@ -33,8 +33,9 @@ const DARK_MONZA_RED = [179, 0, 30] // Hex = #B3001E
 
 // Great combinations:
 // A: Malachite, B: Paradiso
-// A: Firefly, B: Cello or Indigo or Astronaut.
+// A: Firefly, B: Astronaut or Cello or Indigo.
 // A: Martinique, B: Cello for a blue gradient, Dark Monza Red for a blue-red mix.
+// A: Firefly, B: Dark Monza Red.
 
 // Tips:
 // 1. Color A is dominant, B is accent.

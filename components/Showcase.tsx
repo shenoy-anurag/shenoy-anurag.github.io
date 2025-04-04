@@ -111,7 +111,7 @@ export default function Showcase() {
             className="grid-flow-auto grid-row-2 grid gap-4 py-8 lg:grid-flow-row lg:grid-cols-2 lg:gap-2 lg:py-24"
           >
             <div className="order-2 flex flex-col gap-6 lg:order-1 lg:items-start lg:gap-6">
-              <h4 className="text-primary-500 text-lg">Project {d.id}</h4>
+              <h1 className="text-primary-500 text-lg">Project {d.id}</h1>
               <h2 className="text-2xl font-bold md:text-2xl lg:pr-8 lg:text-3xl">{d.title}</h2>
               <div className="flex flex-col gap-6 lg:gap-6 lg:pr-28">
                 <p className="text-lg/8">{d.description}</p>

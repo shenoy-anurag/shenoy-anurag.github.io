@@ -4,7 +4,7 @@ import { Separator } from '@radix-ui/react-separator'
 import GradientAnimation from '@/components/GradientAnimation'
 import Header from '@/components/Header'
 import MainSectionContainer from '@/components/MainSectionContainer'
-import Hero from '@/components/Heading'
+import Hero from '@/components/Hero'
 import Showcase from '@/components/Showcase'
 import { COLOR_A, COLOR_B } from './colors'
 
