@@ -44,10 +44,10 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
-      - run: echo "NEXT_RESUME_PDF=${NEXT_RESUME_PDF}"
+      - run: echo "NEXT_RESUME_PDF=${{ env.NEXT_RESUME_PDF}}"
         env:
           NEXT_RESUME_PDF: ${{ vars.NEXT_RESUME_PDF }}
-      - run: echo "SECRET_RESUME_PDF=${SECRET_RESUME_PDF}"
+      - run: echo "NEXT_RESUME_PDF=${{ env.SECRET_RESUME_PDF}}"
         env:
           SECRET_RESUME_PDF: ${{ secrets.NEXT_RESUME_PDF }}
 
