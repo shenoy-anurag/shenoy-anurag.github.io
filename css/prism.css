@@ -93,6 +93,16 @@ pre[class*="language-"] {
   white-space: normal;
 }
 
+/* Inline code 2 */
+:not(pre)>code {
+  background: #2E3440;
+  color: #88C0D0;
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  word-break: break-all;
+}
+
 .token.comment,
 .token.prolog,
 .token.doctype,

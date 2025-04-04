@@ -79,10 +79,10 @@ ProjectName
 
 ```yaml
 services:
-  my_image_name:
-      image: <aws_respository_name>/<tag>
-      container_name: my_container_name
-      build:      
+    my_image_name:
+        image: <aws_respository_name>/<tag>
+        container_name: my_container_name
+        build:      
             context: 
                 ./backend      
             dockerfile: 
@@ -142,7 +142,7 @@ Attach the following Policy for AWS ECR Private repositories:
 }
 ```
 
-If pushing to a Public AWS ECR repository, attach the following AWS-defined policy to your user: `**AmazonElasticContainerRegistryPublicFullAccess**`.
+If pushing to a Public AWS ECR repository, attach the following AWS-defined policy to your user: `AmazonElasticContainerRegistryPublicFullAccess`.
 
 **Note:** Best practice is the restrict the policy to provide the minimum permissions required.
 

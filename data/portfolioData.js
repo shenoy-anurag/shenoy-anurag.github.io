@@ -31,7 +31,9 @@ const portfolioData = {
   contactSubHeading: "Let's build something great together.",
   contactPhoneNumber: '',
   resume: {
-    urlPdf: process.env.NEXT_RESUME_PDF,
+    urlPdf:
+      process.env.NEXT_RESUME_PDF ||
+      'https://drive.google.com/file/d/1VlPHVgvttEx-UtJzm7N_Lzt5GHOepcUZ/view?usp=sharing',
     urlDoc: process.env.NEXT_RESUME_DOC,
   },
 
