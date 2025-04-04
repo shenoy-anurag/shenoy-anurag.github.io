@@ -48,3 +48,4 @@ yarn-error.log*
 
 # experiments / local backup
 /exp/
+giscus.config
