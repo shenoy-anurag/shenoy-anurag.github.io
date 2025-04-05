@@ -6,7 +6,7 @@ const siteMetadata = {
   description: 'My personal corner of the web, showcasing my projects, blog, and my portfolio.',
   language: 'en-us',
   theme: 'dark', // system, dark or light
-  siteUrl: 'https://www.anuragshenoy.in',
+  siteUrl: 'https://www.anuragshenoy.com',
   siteRepo: 'https://github.com/shenoy-anurag/shenoy-anurag.github.io',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/landing-page.webp`,
