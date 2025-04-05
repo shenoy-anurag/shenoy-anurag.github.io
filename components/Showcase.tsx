@@ -19,6 +19,24 @@ interface ShowcaseItem {
 const showcaseItems: ShowcaseItem[] = [
   {
     id: '01',
+    title: 'MedQuAD RAG Bot — A Retrieval Augmented Generation Chatbot',
+    description:
+      'A Chatbot utilizing the MedQuAD Dataset to provide accurate medical information and answers using technologies such as Retrieval Augmented Generation (RAG) and Large Language Models (LLMs).',
+    techStack: 'GPT 4o-mini LLM, Qdrant Vector DB, LangChain framework, FastAPI, & React.',
+    deployment: 'AWS Lambda, Docker, AWS ECR, AWS API Gateway, Netlify.',
+    keyFeatures: [
+      'Retrieval using Qdrant’s Vector DB, with the MedQuAD dataset as it’s high-quality, and accurate knowledge base.',
+      'Prompt Engineering for providing context and constraining output length and scope.',
+      'Deployment on Serverless compute for cost-effectiveness and high-throughput.',
+    ],
+    imgSrc: '/static/images/ragbot/medquad-diabetes.webp',
+    imgAlt:
+      'Demonstration screenshot of HinDict the Hindi to English dictionary project using the word Namaste as input',
+    demoURL: { url: 'https://medquad.netlify.app/', text: 'MedQuAD RAG Bot' },
+    githubURL: { url: 'https://github.com/shenoy-anurag/LLM-RAG/', text: 'GitHub' },
+  },
+  {
+    id: '02',
     title: 'HinDict — Hindi to English Dictionary',
     description:
       'A bilingual dictionary that lets users type Hindi words phonetically in English letters to find the best English equivalents.',
@@ -35,7 +53,7 @@ const showcaseItems: ShowcaseItem[] = [
     githubURL: { url: 'https://github.com/shenoy-anurag/HinDict', text: 'GitHub' },
   },
   {
-    id: '02',
+    id: '03',
     title: 'Debate AI — Agentic Research-Paper Debate Tool',
     description:
       'An autonomous debate platform that pits two LLM-based AI agents against each other on user-selected topics, moderated by a third AI agent.',
@@ -50,20 +68,6 @@ const showcaseItems: ShowcaseItem[] = [
     imgAlt:
       'Demonstration screenshot of Debate AI project, with two AI agents debating the topic "Should transformer model be used as the primary architecture for all NLP models?".',
     githubURL: { url: 'https://github.com/shenoy-anurag/DebateAI', text: 'Debate AI' },
-  },
-  {
-    id: '03',
-    title: 'Guessir - Word Guessing Game with a Twist',
-    description:
-      'A 6-letter word-guessing game featuring a dynamic “Hot & Cold” mechanic to guide players on letter positions.',
-    techStack: 'React, Nextjs, Python, FastAPI, Postgres',
-    keyFeatures: [
-      'Uses color gradients to indicate how close each guessed letter is to its correct position.',
-      'Offers a fresh alternative to standard Wordle-style puzzles.',
-    ],
-    imgSrc: '/static/images/guessir/guessir-jester2.webp',
-    imgAlt:
-      'Screenshot of Guessir, the word guessing game being played with the player successfully guessing the correct answer of "Jester"',
   },
   {
     id: '04',
@@ -83,21 +87,17 @@ const showcaseItems: ShowcaseItem[] = [
   },
   {
     id: '05',
-    title: 'MedQuAD RAG Bot — A Retrieval Augmented Generation Chatbot',
+    title: 'Guessir - Word Guessing Game with a Twist',
     description:
-      'A Chatbot utilizing the MedQuAD Dataset to provide accurate medical information and answers using technologies such as Retrieval Augmented Generation (RAG) and Large Language Models (LLMs).',
-    techStack: 'GPT 4o-mini LLM, Qdrant Vector DB, LangChain framework, FastAPI, & React.',
-    deployment: 'AWS Lambda, Docker, AWS ECR, AWS API Gateway, Netlify.',
+      'A 6-letter word-guessing game featuring a dynamic “Hot & Cold” mechanic to guide players on letter positions.',
+    techStack: 'React, Nextjs, Python, FastAPI, Postgres',
     keyFeatures: [
-      'Retrieval using Qdrant’s Vector DB, with the MedQuAD dataset as it’s high-quality, and accurate knowledge base.',
-      'Prompt Engineering for providing context and constraining output length and scope.',
-      'Deployment on Serverless compute for cost-effectiveness and high-throughput.',
+      'Uses color gradients to indicate how close each guessed letter is to its correct position.',
+      'Offers a fresh alternative to standard Wordle-style puzzles.',
     ],
-    imgSrc: '/static/images/ragbot/medquad-ragbot-in-action.png',
+    imgSrc: '/static/images/guessir/guessir-jester2.webp',
     imgAlt:
-      'Demonstration screenshot of HinDict the Hindi to English dictionary project using the word Namaste as input',
-    demoURL: { url: 'https://medquad.netlify.app/', text: 'MedQuAD RAG Bot' },
-    githubURL: { url: 'https://github.com/shenoy-anurag/LLM-RAG/', text: 'GitHub' },
+      'Screenshot of Guessir, the word guessing game being played with the player successfully guessing the correct answer of "Jester"',
   },
 ]
 
