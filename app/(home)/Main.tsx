@@ -6,7 +6,7 @@ import Header from '@/components/Header'
 import MainSectionContainer from '@/components/MainSectionContainer'
 import Hero from '@/components/Hero'
 import Showcase from '@/components/Showcase'
-import { COLOR_A, COLOR_B } from './colors'
+import { COLOR_A, COLOR_B } from '@/components/lib/colors'
 
 export default function Home() {
   const colorA = COLOR_A
