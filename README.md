@@ -1,6 +1,6 @@
 # Overview
 
-My Portfolio Website. Responsive and stylish like Squarespace templates.
+My Portfolio Website.
 
 ## SEO
 Good Lighthouse score

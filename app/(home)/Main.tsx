@@ -7,6 +7,7 @@ import MainSectionContainer from '@/components/MainSectionContainer'
 import Hero from '@/components/Hero'
 import Showcase from '@/components/Showcase'
 import { COLOR_A, COLOR_B } from '@/components/lib/colors'
+import Experience from '@/components/Experience'
 
 export default function Home() {
   const colorA = COLOR_A
@@ -31,12 +32,17 @@ export default function Home() {
         <Hero />
       </MainSectionContainer>
       <MainSectionContainer>
+        {/* <Experience />
+        <Separator
+          orientation="horizontal"
+          className="border-t border-gray-300 dark:border-white"
+        /> */}
         <Showcase />
         {/* {siteMetadata.newsletter?.provider && (
             <div className="flex items-center justify-center pt-4">
               <NewsletterForm />
             </div>
-          )} */}
+            )} */}
         <Separator
           orientation="horizontal"
           className="border-t border-gray-300 dark:border-white"

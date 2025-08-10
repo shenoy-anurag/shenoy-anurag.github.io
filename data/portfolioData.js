@@ -3,12 +3,12 @@ const portfolioData = {
   firstName: 'Anurag',
   lastName: 'Shenoy',
   headerTaglines: [
-    'I’m a Software Engineer based in the US,',
+    'I’m a Software Engineer based in India,',
     'passionate about AI-driven solutions.',
   ],
   headerSubtitle: 'Currently open to work, I’m looking for opportunities to make an impact.',
   //   Header Paragraph
-  headline: 'I’m a Software Engineer based in the US, passionate about AI-driven solutions.',
+  headline: 'I’m a Software Engineer based in India, passionate about AI-driven solutions.',
   // headerParagraph:
   //   'Software Engineer specialized in ML with over 5 years of experience in building ML / AI models and web applications.',
   lookBelow: 'Scroll down to see how I bring ideas to life',
