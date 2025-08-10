@@ -51,6 +51,5 @@
   "deployment": 1,
   "aws": 1,
   "devops": 1,
-  "fastapi": 1,
-  "uiux": 1
+  "fastapi": 1
 }

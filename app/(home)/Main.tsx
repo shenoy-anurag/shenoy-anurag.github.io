@@ -7,7 +7,7 @@ import MainSectionContainer from '@/components/MainSectionContainer'
 import Hero from '@/components/Hero'
 import Showcase from '@/components/Showcase'
 import { COLOR_A, COLOR_B } from '@/components/lib/colors'
-import Experience from '@/components/Experience'
+// import Experience from '@/components/Experience'
 
 export default function Home() {
   const colorA = COLOR_A
