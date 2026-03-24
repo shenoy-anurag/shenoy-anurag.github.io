@@ -68,9 +68,7 @@ module.exports = () => {
     basePath,
     reactStrictMode: true,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-    eslint: {
-      dirs: ['app', 'components', 'layouts', 'scripts'],
-    },
+    turbopack: {},
     images: {
       remotePatterns: [
         {
@@ -82,6 +80,7 @@ module.exports = () => {
           hostname: 'i.imgur.com',
         },
       ],
+      qualities: [100, 75],
       unoptimized,
     },
     async headers() {
